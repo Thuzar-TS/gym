@@ -1,0 +1,31 @@
+import { Injectable } from '@angular/core';
+import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angular/http';
+import {Observable}     from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
+import {commonRouteUrl} from 'app/app.service';
+
+@Injectable()
+export class RegistersService {
+
+  constructor(private http:Http, public comcom: commonRouteUrl) { }
+
+  getLedger(a,mbrid) {
+    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' });
+    let options = new RequestOptions({ headers: headers });
+    let body = JSON.stringify(a);
+     return this.http.post(this.comcom.commonroute+'registersapi.php?mbrid='+mbrid, body, options )
+   // return this.http.get(this.comcom.commonroute+'registersapi.php?mbrid='+mbrid)
+    .map((res:Response) => res.json());
+  }
+
+  createDaily(dailysave,mbrid) {
+    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' });
+    let options = new RequestOptions({ headers: headers });
+    let body = JSON.stringify(dailysave);
+    return this.http.post(this.comcom.commonroute+'registersapi.php?mbrid='+mbrid, body, options )
+    .map((res: Response) => res.json());
+  }
+
+}

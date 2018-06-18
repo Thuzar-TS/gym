@@ -1,0 +1,389 @@
+<div class="animated fadeIn">
+	<div class="row">
+	<div class="row col-sm-9 pad-free">
+		<div class="col-sm-3">
+		<div class="form-group">
+		<input type="text" [(ngModel)] ="namefilter" placeholder="Member Name" name="namefilter" (input)="filterItem()" class="form-control" >
+		</div>	
+		</div>	
+		<div class="col-sm-3">
+		<div class="form-group">
+		<input type="text" [(ngModel)] ="idfilter" placeholder="ID" name="idfilter" (input)="filterItem()" class="form-control" >
+		</div>	
+		</div>
+		<div class="col-sm-3">
+		<div class="form-group">
+			<select name="activembr" [(ngModel)] ="activembr" (ngModelChange)="filterItem()" class="form-control" size="1">
+				<option value="">-- Choose Active/End --</option>
+				<option value="0">Active Members</option>
+				<option value="1">End Members</option>
+			</select>
+			
+		</div>	
+		</div>
+		<!-- <div class="col-sm-2">
+		<div class="form-group">
+		<input type="text" [(ngModel)] ="genderfilter" placeholder="Gender" name="genderfilter" (input)="filterItem(genderfilter)" class="form-control" >
+		</div>	
+		</div> -->				
+	</div>	
+	<div class="col-sm-3 float-right  pad-free">
+		<div class="row col-sm-12 pad-free">
+		<label class="col-sm-4" style="line-height:30px; color:#aaa;">REG Date : </label>
+		<div class="col-sm-8 pad-free">
+			<div class="form-group">		
+			<input type="date" [(ngModel)] ="regdatefilter" placeholder="REG Date" name="regdatefilter" (input)="filterItem()" class="form-control" >
+		</div>
+		</div>	
+		</div>
+	</div>
+	<div id="blackoverlay" class="col-sm-12 pad-free" [hidden]="hideVal" style="position:fixed;"></div>
+	<div class="col-sm-12 pad-free">
+	<div class="card">
+	<div class="card-header">
+		<i class="icon-people"></i> <strong>Registered Member List Table</strong>
+		<!-- <span class="badge badge-primary float-right add-btn" (click)="showsetup()"><i class="fa fa-plus fa-lg"></i></span> -->
+	</div>
+	<div class="card-block">
+	<table class="table table-bordered table-striped table-condensed" [mfData]="data" #mf="mfDataTable"
+           [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+ 			<thead>
+			<tr>
+				<th>Name</th>
+				<th>DOB</th>
+				<th style="width:100px;">REG&nbsp;Date</th>
+				<th>Target</th>
+				<th>Phone</th>
+				<th>Address</th>
+				<th>Work</th>
+				<th colspan="3">&nbsp;</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr *ngFor="let mbr of mf.data" [hidden]="data?.length==0" [class.proend]="mbr.mbr_end==1">
+				<td>
+				<i class="icon-user icons" [hidden]="mbr.gender=='2'" style="color:black;font-weight:bold;"></i>
+				<i class="icon-user-female icons" [hidden]="mbr.gender=='1'" style="color:violet;font-weight:bold;"></i>
+				<a [routerLink]="['/member/profile',mbr.member_id]" title="Profile" style="font-weight:bold;">{{mbr.member_name}}</a>
+				&nbsp;
+				<!-- <a [routerLink]="['/member/registers',mbr.member_id]"><i class="fa fa-file-text-o fa-lg reghis" title="Register History"></i></a> -->
+				<br>
+				<span style="color:#bcae10;letter-spacing: 1px;font-weight:normal;">{{mbr.member_register_id}}</span>
+								
+				</td>
+				<td>{{mbr.dob}}</td>
+ 				<td>{{mbr.register_date}}</td>
+				<td>{{mbr.target}}</td>
+				<td>{{mbr.phone}}</td>
+				<td>{{mbr.address}}</td>
+				<td>{{mbr.work}}</td>
+				<!-- <td style="width:80px;"><button (click)="mbregister(mbr)" type="button" class="btn btn-outline-primary btn-sm" style="font-size:0.9em;">Register</button></td> -->
+				<td style="width:70px;"><a [routerLink]="['/member/registers',mbr.member_id]">
+					<button type="button" class="btn btn-outline-primary btn-sm" style="font-size:0.9em;">
+					History
+					</button></a>				
+				</td>
+				<td style="width:80px;"><a [routerLink]="['/member/dailyaction',mbr.member_id]">
+					<button type="button" class="btn btn-outline-primary btn-sm" style="font-size:0.9em;">
+					Daily Action
+					</button></a>				
+				</td>
+				<td style="width:70px;"><a [routerLink]="['/member/ledgers',mbr.member_id]">
+					<button (click)="mbregister(mbr.member_id)" type="button" class="btn btn-outline-primary btn-sm" style="font-size:0.9em;">
+					Ledger
+					</button></a>				
+				</td>
+				<!-- <td style="width:40px;"><a class="editbtn" (click)="editMember(mbr)">Edit</a></td> -->
+				<!-- <td style="width:50px;"><a class="deletebtn" (click)="deleteMember(mbr)">Delete</a></td> -->
+			</tr>
+			<tr [hidden]="data?.length!=0">
+				<td>-</td>
+				<td>No Record</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+			</tr>
+		       </tbody>
+		      <tfoot>
+	                <tr>
+	                    <td colspan="10">
+	                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+	                    </td>
+	                </tr>
+	                </tfoot>
+		</table>
+				</div>
+			</div>
+		</div>
+          
+	</div>
+</div>
+<div class="row justify-content-center">
+	<div id="whiteoverlay" [hidden]="setupVal" class="col-sm-6">
+		   <div class="card" style="margin:0px;">
+			<div class="card-header">
+				<strong>Member Setup</strong>
+			</div>
+			<div class="card-block">
+			<form action="" method="post" name="myForm" enctype="multipart/form-data" class="form-horizontal ">
+			<div class="row">
+			   <div class="col-sm-6">
+			      <div class="form-group">
+				<label for="name">Member Name</label>
+				<input type="text" class="form-control" id="name" name="new_mbr" [(ngModel)]="new_mbr" placeholder="Enter Name" required>
+			      </div>
+			      <div class="row">
+			           <div class="col-sm-12">
+			           	<label>Date of Birth</label>
+			           </div>
+			           <div class="col-sm-12">
+			              <div class="form-group">
+			                <input type="date" [(ngModel)] ="dob" name="dob" class="form-control">
+			              </div>
+			            </div>				            				            
+			        </div>
+			        <div class="row">				        
+			          <div class="col-sm-6">
+			        	<div class="radio">
+					<label for="radio1">
+						<input type="radio" id="radio1" name="gender" [(ngModel)]="gender" value="1"> Male
+					</label>
+				</div>
+				</div>
+				<div class="col-sm-6">
+			        	<div class="radio">
+					<label for="radio2">
+						<input type="radio" id="radio2" name="gender" [(ngModel)]="gender" value="2"> Female
+					</label>
+				</div>
+			        </div>
+			        </div>
+			        <div class="col-sm-12 pad-free">
+				<label>Member Registration Date</label>
+				</div>
+				<div class="col-sm-12 pad-free">
+					<div class="form-group">
+					<input type="date" [(ngModel)] ="mbregdate" name="mbregdate" class="form-control" >
+					</div>
+				</div>
+			        <div class="col-sm-12 pad-free">
+					<label>Phone</label>
+				</div>
+			        <div class="form-group">
+			                <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="phone" placeholder="Your phone">
+			           </div>
+			   </div>
+
+			   <div class="col-sm-6">
+			      <div class="form-group">
+				<label for="name">Weight</label>
+				<input type="text" class="form-control" id="name" name="weight" [(ngModel)]="weight" placeholder="Body weight in lb" required>
+			      </div>
+			      <div class="form-group">
+				<label for="name">Height (eg. 5 feet 4 inches)</label>
+				<input type="text" class="form-control" id="name" name="height" [(ngModel)]="height" placeholder="Height in feet/inches (eg. 5 feet 4 inches)" required>
+			      </div>
+			      <div class="form-group">
+				<label for="name">Target</label>
+				<input type="text" class="form-control" id="name" name="target" [(ngModel)]="target" placeholder="Enter your target goal (weight loss/gain)" required>
+			      </div>
+			      <div class="form-group">
+				<label for="measure">Body Measures</label>
+				<input type="text" class="form-control" id="measure" name="measure" [(ngModel)]="measure" placeholder="Enter your body measure" required>
+			      </div>
+			      <div class="form-group">
+				<label for="name">Recent Gym</label>
+				<div class="row">				        
+			          <div class="col-sm-6">
+			        	<div class="radio">
+					<label for="radio3">
+						<input type="radio" id="radio3" name="recentgym" [(ngModel)]="recentgym" value="yes"> Yes
+					</label>
+				</div>
+				</div>
+				<div class="col-sm-6">
+			        	<div class="radio">
+					<label for="radio4">
+						<input type="radio" id="radio4" name="recentgym" [(ngModel)]="recentgym" value="no"> No
+					</label>
+				</div>
+			        </div>
+			        </div>
+			      </div>
+			   </div>
+			</div>
+			</form>				
+	        		</div>
+	        		<div class="card-footer">
+	        		<div class="col-sm-3 float-right pad-free">
+	        			<button type="submit" class="btn btn-sm btn-primary" [disabled]="finishedVal" [hidden]="saveVal" (click)="createMember()"><i class="fa fa-check fa-lg"></i> Save</button>
+				<button type="submit" class="btn btn-sm btn-primary" [disabled]="finishedVal" [hidden]="!saveVal" (click)="updateMember()"><i class="fa fa-check fa-lg"></i> Edit</button>
+				<button type="reset" class="btn btn-sm btn-danger" (click)="clearMember()"><i class="fa fa-remove fa-lg"></i> Cancel</button>
+	        		</div>				
+			</div>
+	        </div>
+	   </div>
+
+		<div id="whiteoverlay" [hidden]="regVal" class="col-sm-8">
+			
+		   <div class="card" style="margin:0px;">
+			<div class="card-header">
+				<strong>Member Register</strong>
+			</div>
+			<div class="card-block">
+			   <div class="row">
+			   <div class="col-sm-8 pad-free">
+			   <div class="col-sm-12">
+			      <div class="row">
+			      	<div class="col-sm-6 pad-free">
+			      	   <div class="col-sm-12">
+			   	   <label>Member Name</label>
+			   	</div>
+			   	<div class="col-sm-12">
+				   <div class="form-group">
+				      <input type="text" [(ngModel)] ="mbrname" readonly="readonly"  name="mbrname" class="form-control">
+				   </div>
+				</div>
+			      	</div>
+			      	<div class="col-sm-6 pad-free">
+				     <div class="col-sm-12">
+					<label>Deposit Date</label>
+				      </div>
+				     <div class="col-sm-12">
+					<div class="form-group">
+					<input type="date" [(ngModel)] ="regdate" name="regdate" class="form-control" >
+					</div>
+				      </div>	
+				</div>
+			      </div>			      
+			   </div>
+			   <div class="col-sm-12">
+				<div class="row">
+				   <div class="col-sm-6">
+					<div class="form-group">
+					<label for="name">Register Member Type</label>
+					<select name="membertype" (ngModelChange)="mbrtypechange($event)" [(ngModel)] = "membertype" class="form-control" size="1">
+						<option *ngFor="let x of membertypes" [ngValue]="x.mbr_type_id">{{x.mbr_type_name}}</option>
+					</select>
+					</div>
+				   </div>
+				   <div class="col-sm-6" [hidden]="proVal">
+   					<div class="form-group">
+   					<label for="name">Promotion Type</label>
+   					<select name="promo" (ngModelChange)="promochange($event)" [(ngModel)] = "promo" class="form-control" size="1">
+   						<option *ngFor="let x of promotions" [ngValue]="x">{{x.pro_name}}</option>
+   					</select>
+   					</div>
+					
+				   </div>
+				   <div class="col-sm-12">
+					<label [hidden]="prodescription==null" class="form-control alert alert-info">{{prodescription}}</label>
+				   </div>				   
+				</div>
+			   </div>
+				
+				
+
+				
+			    	
+
+				<div class="col-sm-12">
+				   <div class="row">
+				   	<div class="col-sm-6 pad-free">
+					   	<div class="col-sm-12">
+					   	   <label>Start Date</label>
+					   	</div>
+					   	<div class="col-sm-12">
+						   <div class="form-group">
+						   <input type="date" [(ngModel)] ="startdate" (ngModelChange)="datechange(startdate,enddate)" name="startdate" class="form-control" >
+						   </div>
+						</div>
+					   </div>
+					   <div class="col-sm-6 pad-free">
+					      <div class="col-sm-12">
+						<label>End Date</label>
+					      </div>
+					     <div class="col-sm-12">
+						<div class="form-group">
+						<input type="date" [(ngModel)] ="enddate" name="enddate" (ngModelChange)="datechange(startdate,enddate)" class="form-control" >
+						</div>
+					      </div>	
+					   </div>
+				   </div>
+				</div>			    	
+				
+				<div class="col-sm-12">
+					<label>Description</label>
+				</div>
+				<div class="col-sm-12">
+				<div class="form-group">
+					<input type="text" [(ngModel)] ="incomedes" name="incomedes" class="form-control" placeholder="Description">
+				</div>
+				</div>				   		
+				  
+			   </div>
+			   <div class="col-sm-4 pad-free">
+			   	<div class="col-sm-12" [hidden]="memberlist" style="margin-bottom:15px;">            	
+				    <div class="input-field col-sm-12 pad-free">
+				      <div class="col-sm-12 pad-free">
+				   	<label>Additional Members</label>
+				      </div>
+				      <input type="text" [disabled]="addmbrVal" class="form-control validate filter-input" placeholder="Enter Additional Members Name" [(ngModel)]=query (keyup)=filter($event)>
+				     <div class="suggestions col-sm-12" *ngIf="filteredList.length > 0">
+				        <ul *ngFor="let item of filteredList" >
+				            <li>
+				                <a (click)="select(item)" [hidden]="item.member_id==memberid">{{item.member_name}}({{item.member_register_id}})</a>
+				            </li>
+				        </ul>
+				    </div>
+				    </div>
+				    
+				    <div class="row">
+				    	<div class="col-sm-12">
+				    	       <div *ngFor="let item of selected">
+					        <div class="selected" >
+					            <span>{{item.member_name}}</span>
+					            <a (click)="remove(item)" style="color:black">x</a>
+					        </div>
+					    </div>
+				    	</div>
+				    </div>
+				    					
+			            </div>
+			   	
+			   	<div class="col-sm-12 pad-free">				 
+				   <div class="col-sm-12">
+				   <label>Total Amount</label>
+				   </div>
+				   <div class="col-sm-12">
+				   <div class="form-group">
+				      <input type="text" name="totalamt"  [(ngModel)] ="totalamt" class="form-control" placeholder="0">
+				   <span style="color:red;font-weight:bold;" [hidden]="memberlist">&nbsp; (Total Amount of all members!)</span>
+				   </div>
+				    </div>						
+				</div>
+				
+				<div class="col-sm-12 pad-free"> 
+					<div class="col-sm-12">
+						<label>Remark</label>
+					   </div>
+					   <div class="col-sm-12">
+						<textarea name="remark" [(ngModel)] ="remark" class="form-control" rows="4"></textarea>
+					   </div>
+				</div>
+			   </div>					            				            
+	           	</div>
+			</div>
+			<div class="card-footer">
+				<button type="submit" class="btn btn-sm btn-primary" [disabled]="finishedVal" [disabled]="membertype == 0 || totalamt == 0 || startdate>enddate" [hidden]="saveVal" (click)="registerMember()"><i class="fa fa-check fa-lg"></i> Register</button>
+				<button type="submit" class="btn btn-sm btn-primary" [disabled]="finishedVal" [hidden]="!saveVal" (click)="updateRegister()"><i class="fa fa-check fa-lg"></i> Edit</button>
+				<button type="reset" class="btn btn-sm btn-danger" (click)="clearRegister()"><i class="fa fa-remove fa-lg"></i> Cancel</button>
+			</div>
+		   </div>
+		</div>
+</div>

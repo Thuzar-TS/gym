@@ -1,0 +1,360 @@
+<div class="animated fadeIn">
+
+	<div class="row">
+	<div class="col-sm-12 pad-free">
+	<div class="float-left col-sm-5">
+	<div class="row">
+	<div class="col-sm-5">
+	   <div class="form-group">		
+		<!-- <input type="date" [(ngModel)] ="incfromdatefilter" name="incfromdatefilter" (input)="filterItem(incfromdatefilter,inctodatefilter)" class="form-control" > -->
+		<label for="">From Date</label>
+		<input type="date" [(ngModel)] ="incfromdatefilter" name="incfromdatefilter" class="form-control" >
+	   </div>	
+	</div>
+	<div class="col-sm-5">
+	   <div class="form-group">
+	   	<label for="">To Date</label>	
+		<input type="date" [(ngModel)] ="inctodatefilter" name="inctodatefilter" class="form-control" >
+		<!-- <input type="date" [(ngModel)] ="inctodatefilter" name="inctodatefilter" (input)="filterItem(incfromdatefilter,inctodatefilter)" class="form-control" > -->
+	   </div>	
+	</div>
+	<div class="col-sm-2">
+	    <div class="form-group">
+	    	<button class="btn btn-primary" (click)="ngOnInit()" style="margin-top:28px;">Search</button>
+	    </div>
+	</div>
+	</div>
+	</div>	
+	</div>		
+	
+	<div id="blackoverlay" class="col-sm-12 pad-free" [hidden]="hideVal" style="position:fixed;"></div>
+	   <div class="col-sm-12">
+	      <div class="card" style="width:90%;">
+		<div class="card-header">
+			<i class="icon-calculator"></i> 
+			<strong>Excel Report</strong>						
+		</div>
+		
+		<div class="card-block">
+		<div class="col-sm-12 pad-free">
+			<div class="row col-sm-6 pad-free float-left" [hidden]="regexcel == false">
+			<div class="col-sm-4">
+			<div class="form-group">		
+				<input type="date" [(ngModel)] ="regdatefilter" placeholder="Income Date" name="regdatefilter" (input)="filterItem()" class="form-control" >
+			</div>
+			</div>			
+			<div class="col-sm-4">
+			<div class="form-group">
+			<input type="text" [(ngModel)] ="namefilter" placeholder="Member Name" name="namefilter" (input)="filterItem()" class="form-control" >
+			</div>	
+			</div>	
+			<div class="col-sm-4">
+			<div class="form-group">
+			<input type="text" [(ngModel)] ="idfilter" placeholder="Member ID" name="idfilter" (input)="filterItem()" class="form-control" >
+			</div>	
+			</div>
+			</div>	
+
+			<div class="row col-sm-6 pad-free float-left" [hidden]="regexcel == true">
+			<div class="col-sm-4">
+			<div class="form-group">		
+				<input type="date" [(ngModel)] ="dailydate" placeholder="Income Date" name="dailydate" (input)="filterItem1(trainerfilter,dailydate)" class="form-control" >
+			</div>
+			</div>			
+			<div class="col-sm-5">
+			<div class="form-group">
+			<select name="trainerfilter" (ngModelChange)="filterItem1($event,dailydate)" [(ngModel)] = "trainerfilter" class="form-control" size="1">
+			  <option *ngFor="let x of trainers" [ngValue]="x.trainer_id">{{x.trainer_name}}</option>
+			</select>
+			</div>	
+			</div>
+			</div>	
+			<div class="row col-sm-3 float-right">
+			   <div class="col-sm-6">
+			   	<input type="button" value="Export Excel" (click)="tableToExcel()" class="btn btn-primary" />
+			   </div>
+			   <div class="col-sm-6" [hidden]="regexcel == false">
+			   	<input type="button" value="Daily" (click)="dailyExcel('daily')" class="btn btn-primary" />
+			   </div>
+	                        <div class="col-sm-6" [hidden]="regexcel == true">
+			   	<input type="button" value="Register" (click)="dailyExcel('reg')" class="btn btn-primary" />
+			   </div>
+	                    </div>		
+		</div>	                    
+	              
+		<div style="width:100%;overflow-x: auto;" [hidden]="regexcel == false">
+			<div style="width:1200px;">
+				<table class="table table-bordered table-striped table-condensed" [mfData]="data" #mf2="mfDataTable"
+		       		[mfRowsOnPage]="rowsOnPage" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+				<thead>
+					<tr>
+						<th>Register Date</th>
+						<th>Member</th>
+						<th>ID</th>
+						<th>Gender</th>
+						<th>D.O.B</th>
+						<th>Phone</th>
+						<th>Type</th>
+						<th>Promotion</th>
+						<th>Description</th>
+						<th>Voucher</th>
+						<th>From</th>
+						<th>To</th>
+						<th>Days</th>
+						<th>Amount</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let inc of mf2.data" [hidden]="data?.length==0">
+						<td>{{inc.register_date}}</td>
+						<td>{{inc.member_name}}</td>
+						<td>{{inc.member_register_id}}</td>
+						<td>{{inc.gender}}</td>
+						<td>{{inc.dob}}</td>
+						<td>{{inc.phone}}</td>
+						<td>{{inc.mbr_type_name}}</td>
+						<td>{{inc.pro_description}}</td>
+						<td>{{inc.income_description}}</td>
+						<td>{{inc.voucher}}</td>
+						<td>{{inc.start_date}}</td>
+						<td>{{inc.end_date}}</td>
+						<td>{{inc.num_days}} [days]</td>
+						<td class="nums">{{inc.total_amt | number : fractionSize}} <span class="units">ks</span></td>						
+					</tr>
+					<tr [hidden]="data?.length!=0">
+						<td>-</td>
+						<td>No Record</td>
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>	
+						<td>-</td>			
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>	
+						<td>-</td>			
+						<td>-</td>
+						<td>-</td>
+					</tr>
+				</tbody>
+				      <tfoot>
+			                <tr>
+			                    <td colspan="14">
+			                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+			                    </td>
+			                </tr>
+			           </tfoot>
+				</table>
+			</div>
+		</div>		
+		
+		<div style="width:1200px;" id="regtable" style="display:none;">
+			<table class="table table-bordered table-striped table-condensed">
+			<thead>
+				<tr>
+					<th>Register Date</th>
+					<th>Member</th>
+					<th>ID</th>
+					<th>Gender</th>
+					<th>D.O.B</th>
+					<th>Phone</th>
+					<th>Type</th>
+					<th>Promotion</th>
+					<th>Description</th>
+					<th>Voucher</th>
+					<th>From</th>
+					<th>To</th>
+					<th>Days</th>
+					<th>Amount</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let inc of data">
+					<td>{{inc.register_date}}</td>
+					<td>{{inc.member_name}}</td>
+					<td>{{inc.member_register_id}}</td>
+					<td>{{inc.gender}}</td>
+					<td>{{inc.dob}}</td>
+					<td>{{inc.phone}}</td>
+					<td>{{inc.mbr_type_name}}</td>
+					<td>{{inc.pro_description}}</td>
+					<td>{{inc.income_description}}</td>
+					<td>{{inc.voucher}}</td>
+					<td>{{inc.start_date}}</td>
+					<td>{{inc.end_date}}</td>
+					<td>{{inc.num_days}} [days]</td>
+					<td class="nums">{{inc.total_amt | number : fractionSize}} <span class="units">ks</span></td>	
+				</tr>				
+			</tbody>			 
+			</table>
+		</div>
+
+		<div style="width:100%;overflow-x: auto;" [hidden]="regexcel == true">
+			<div style="width:1200px;">
+				<table class="table table-bordered table-striped table-condensed" [mfData]="data" #mf1="mfDataTable"
+		       		[mfRowsOnPage]="rowsOnPage1" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+				<thead>
+				<tr>
+					<th>Date</th>
+					<th>Weeks</th>
+					<th>Days</th>
+					<th>Training</th>
+					<th>Trainer</th>					
+					<th>Weight</th>
+					<th>Height</th>
+					<th>Chest</th>
+					<th>Arm</th>
+					<th>Waist</th>
+					<th>Thigh</th>
+					<th>Glute</th>
+					<th>Calf</th>
+					<th>Alert</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr *ngFor="let daily of mf1.data" [hidden]="data?.length==0">
+					<td>{{daily.action_date}}</td>
+					<td>{{daily.week}}</td>
+					<td>{{daily.days}}</td>
+					<td>{{daily.training_description}}</td>
+					<td>{{daily.trainer_name}}</td>
+					<td>{{daily.weight}}</td>
+					<td>{{daily.height}}</td>
+					<td>{{daily.chest}}</td>
+					<td>{{daily.arm}}</td>
+					<td>{{daily.waist}}</td>
+					<td>{{daily.thigh}}</td>
+					<td>{{daily.glute}}</td>
+					<td>{{daily.calf}}</td>
+					<td>{{daily.alert_description}}</td>
+				</tr>	
+				<tr [hidden]="data?.length!=0">
+						<td>-</td>
+						<td>No Record</td>
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>	
+						<td>-</td>			
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>	
+						<td>-</td>			
+						<td>-</td>
+						<td>-</td>
+					</tr>			
+				</tbody>
+				      <tfoot>
+			                <tr>
+			                    <td colspan="14">
+			                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+			                    </td>
+			                </tr>
+			           </tfoot>
+				</table>
+			</div>
+		</div>	
+
+		<div style="width:1200px;" id="dailytable"  style="display:none;">
+			<table class="table table-bordered table-striped table-condensed">
+			 	<thead>
+				<tr>
+					<th>Date</th>
+					<th>Weeks</th>
+					<th>Days</th>
+					<th>Training</th>
+					<th>Trainer</th>					
+					<th>Weight</th>
+					<th>Height</th>
+					<th>Chest</th>
+					<th>Arm</th>
+					<th>Waist</th>
+					<th>Thigh</th>
+					<th>Glute</th>
+					<th>Calf</th>
+					<th>Alert</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr *ngFor="let daily of data" [hidden]="data?.length==0">
+					<td>{{daily.action_date}}</td>
+					<td>{{daily.week}}</td>
+					<td>{{daily.days}}</td>
+					<td>{{daily.training_description}}</td>
+					<td>{{daily.trainer_name}}</td>
+					<td>{{daily.weight}}</td>
+					<td>{{daily.height}}</td>
+					<td>{{daily.chest}}</td>
+					<td>{{daily.arm}}</td>
+					<td>{{daily.waist}}</td>
+					<td>{{daily.thigh}}</td>
+					<td>{{daily.glute}}</td>
+					<td>{{daily.calf}}</td>
+					<td>{{daily.alert_description}}</td>
+				</tr>				
+				</tbody>
+				
+			</table>
+		</div>
+		</div>
+		</div>
+	   </div>	
+	</div>
+	
+</div>
+
+<div class="row justify-content-center">
+	<div id="whiteoverlay" [hidden]="setupVal" class="col-sm-4">
+		<div class="card" style="margin:0px;">
+		<div class="card-header">
+			<strong>Income</strong>			
+		</div>
+		<div class="card-block">
+		<form action="" method="post" enctype="multipart/form-data" class="form-horizontal ">
+			<div class="row">				           
+			<div class="col-sm-6">
+				<label>Income Date</label>
+				<div class="form-group">
+				<input type="date" [(ngModel)] ="startdate" name="startdate" class="form-control" >
+				</div>
+			</div>
+			<div class="col-sm-6">				          		
+				<div class="form-group">
+				<label for="name">Income Amount</label>
+				<input type="number" class="form-control" placeholder="0" [(ngModel)] ="income_amt" name="income_amt">
+				</div>
+			</div>				            
+			</div>	
+
+			
+			<div class="form-group">
+				<label for="name">Income Description</label>
+				<input type="text" class="form-control" placeholder="Description" [(ngModel)] ="income_name" name="income_name">
+			</div>
+				
+			<div class="form-group">
+				<label for="name">Remark</label>
+				<textarea class="form-control" rows="5" placeholder="Any description" [(ngModel)] ="income_remark" name="income_remark"></textarea>
+			</div>
+			</form>
+			</div>
+			<div class="card-footer">
+				<button type="submit" class="btn btn-sm btn-primary" [hidden]="saveVal" (click)="createIncome()"><i class="fa fa-check fa-lg"></i> Save</button>
+				<button type="submit" class="btn btn-sm btn-primary" [hidden]="!saveVal" (click)="updateIncome()"><i class="fa fa-check fa-lg"></i> Edit</button>
+				<button type="reset" class="btn btn-sm btn-danger" (click)="clearIncome()"><i class="fa fa-remove fa-lg"></i> Cancel</button>
+			</div>	
+		</div>	        			
+		</div>
+</div>
+
+<script>
+	/*exportData() {
+	      var blob = new Blob([document.getElementById('export').innerHTML], {
+	          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+	      });
+	      
+	      saveAs(blob, "Employeereport.xls");
+	  };*/
+</script>

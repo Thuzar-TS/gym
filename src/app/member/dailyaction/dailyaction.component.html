@@ -1,0 +1,324 @@
+<div class="animated fadeIn">
+	<div class="row">
+	<div class="row col-sm-12">
+		<div class="col-sm-5">
+		<div class="row">
+		<div class="col-sm-5">
+		   <div class="form-group">		
+			<label for="">From Date</label>
+			<input type="date" [(ngModel)] ="mbfromdatefilter" name="mbfromdatefilter" class="form-control" >
+		   </div>	
+		</div>
+		<div class="col-sm-5">
+		   <div class="form-group">	
+		   	<label for="">To Date</label>		
+			<input type="date" [(ngModel)] ="mbtodatefilter" name="mbtodatefilter" class="form-control" >
+		   </div>	
+		</div>
+		<div class="col-sm-2">
+		    <div class="form-group">
+		    	<button class="btn btn-primary" (click)="ngOnInit()" style="margin-top:28px;">Search</button>
+		    </div>
+		</div>
+		</div>
+		</div>
+		<div class="col-sm-1 offset-sm-6">
+			<a [routerLink]="['/member/memberlist']" class="custom-anchor float-right"><i class="fa fa-mail-reply-all fa-lg mt-10"></i></a>
+		</div>		
+	</div>	
+	<div id="blackoverlay" class="col-sm-12 pad-free" [hidden]="hideVal" style="position:fixed;"></div>
+	<div class="col-sm-12">
+	<div class="card">
+		<div class="card-header">
+			<i class="icon-people"></i> <strong>Daily Actions</strong>			
+			<span class="badge badge-primary float-right add-btn" (click)="showsetup()" ><i class="fa fa-plus fa-lg"></i></span>
+
+		</div>
+		<div class="card-block">
+		<div class="row">
+			<div class="col-sm-6" *ngFor="let mb of mbr">
+		   	   <label class="lbl-style"><a [routerLink]="['/member/profile',mb.member_id]" title="Profile" style="color:#741600">{{mb.member_name}} <span style="color:#5d73b3;">({{mb.member_register_id}})</span></a></label>	
+		   	</div>
+
+			<div class="col-sm-5 pad-free">
+			<div class="row">
+				<div class="col-sm-6">
+				<div class="form-group">
+				<select name="trainingfilter" (ngModelChange)="filterItem(trainerfilter,$event)" [(ngModel)] = "trainingfilter" class="form-control" size="1">
+				  <option *ngFor="let x of trainings" [ngValue]="x.training_id">{{x.training_description}}</option>
+				</select>
+				</div>	
+				</div>	
+				<div class="col-sm-6">
+				<div class="form-group">
+				<select name="trainerfilter" (ngModelChange)="filterItem($event,trainingfilter)" [(ngModel)] = "trainerfilter" class="form-control" size="1">
+				  <option *ngFor="let x of trainers" [ngValue]="x.trainer_id">{{x.trainer_name}}</option>
+				</select>
+				</div>	
+				</div>
+			</div>			
+			</div>
+
+			<div class="col-sm-1">
+			   <button class="btn btn-primary" style="font-size:0.9em;" (click)="alertsetup(mbrid)">Alert</button>
+		   	</div>	
+		</div>	
+		<table class="table table-bordered table-striped table-condensed" [mfData]="data" #mf="mfDataTable"
+                      [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+ 			<thead>
+			<tr>
+				<th>Date</th>
+				<th>Weeks</th>
+				<th>Days</th>
+				<th>Training</th>
+				<th>Trainer</th>					
+				<th>Weight</th>
+				<th>Height</th>
+				<th>Chest</th>
+				<th>Arm</th>
+				<th>Waist</th>
+				<th>Thigh</th>
+				<th>Glute</th>
+				<th>Calf</th>
+				<th>&nbsp;</th>
+				<th colspan="2">Action</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr *ngFor="let daily of mf.data" [hidden]="data?.length==0">
+				<td>{{daily.action_date}}</td>
+				<td>{{daily.week}}</td>
+				<td>{{daily.days}}</td>
+				<td>{{daily.training_description}}</td>
+				<td>{{daily.trainer_name}}</td>
+				<td>{{daily.weight}}</td>
+				<td>{{daily.height}}</td>
+				<td>{{daily.chest}}</td>
+				<td>{{daily.arm}}</td>
+				<td>{{daily.waist}}</td>
+				<td>{{daily.thigh}}</td>
+				<td>{{daily.glute}}</td>
+				<td>{{daily.calf}}</td>
+				<td><i style="cursor:pointer;" class="fa fa-picture-o" (click)="showPhoto(daily.gen_name,daily.daily_action_id)"></i></td>
+				<td style="width:70px;"><a class="editbtn" (click)="editDailyaction(daily)">Edit</a></td>
+				<td style="width:70px;"><a class="deletebtn" (click)="deleteDailyaction(daily)">Delete</a></td>
+			</tr>
+			<tr [hidden]="data?.length!=0">
+				<td>-</td>
+				<td>No Record</td>
+				<td>-</td>
+				<td>-</td>
+				<td colspan="12">-</td>
+			</tr>
+			</tbody>
+			<tfoot>
+		                <tr>
+		                    <td colspan="16">
+		                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+		                    </td>
+		                </tr>
+		           </tfoot>
+		</table>
+		</div>
+		</div>
+		</div>			
+	</div>	
+</div>
+<div class="row justify-content-center">	
+	<div id="whiteoverlay" [hidden]="setupVal" class="col-sm-8">
+		<div class="card" style="margin:0px;">
+			<div class="card-header">
+				<strong>Daily Action Setup</strong>
+			</div>
+			<div class="card-block">
+			<form action="" method="post" name="myForm" enctype="multipart/form-data" class="form-horizontal ">
+			<div class="row">
+			<div class="col-sm-4">			     
+				<div class="form-group">
+					<label>Date</label>
+					<input type="date" [(ngModel)] ="actiondate" name="actiondate" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="wk">Week</label>
+					<input type="text" class="form-control" id="wk" name="week" [(ngModel)]="week" placeholder="Type Here">
+				</div>
+				<div class="form-group">
+					<label>Days</label>
+					<select name="day" (ngModelChange)="daychange($event)" [(ngModel)] = "day" class="form-control" size="1">
+					  <option *ngFor="let x of days" [ngValue]="x.day_id">{{x.day}}</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>Training</label>
+					<select name="training" [(ngModel)] = "training" class="form-control" size="1">
+					  <option *ngFor="let x of trainings" [ngValue]="x.training_id">{{x.training_description}}</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>Trainer</label>
+					<select name="trainer" [(ngModel)] = "trainer" class="form-control" size="1">
+					  <option *ngFor="let x of trainers" [ngValue]="x.trainer_id">{{x.trainer_name}}</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label for="weight">Weight</label>
+					<input type="text" class="form-control" id="weight" name="weight" [(ngModel)]="weight" placeholder="Type Here">
+				</div>
+				<div class="form-group">
+					<label for="height">Height</label>
+					<input type="text" class="form-control" id="height" name="height" [(ngModel)]="height" placeholder="Type Here">
+				</div>
+				<div class="form-group">
+					<label for="chest">Chest</label>
+					<input type="text" class="form-control" id="chest" name="chest" [(ngModel)]="chest" placeholder="Type Here">
+				</div>
+				<div class="form-group">
+					<label for="arm">Arm</label>
+					<input type="text" class="form-control" id="arm" name="arm" [(ngModel)]="arm" placeholder="Type Here">
+				</div>
+				<div class="form-group">
+					<label for="armfile">File</label>	
+					<input type="file"
+					       ngFileSelect
+					       [options]="options"
+					       (onUpload)="handleUpload($event)"
+					       (beforeUpload)="beforeUpload($event)" id="fileinput" #fileinput multiple/>
+								
+					<!-- <input type="file" (change)="fileChanged($event)" class="form-control" id="armfile" name="file" [(ngModel)]="file"> -->
+				</div>
+
+			</div>
+
+			<div class="col-sm-4">
+				
+				<div class="form-group">
+					<label for="waist">Waist</label>
+					<input type="text" class="form-control" id="waist" name="waist" [(ngModel)]="waist" placeholder="Type Here">
+				</div>
+				<div class="form-group">
+					<label for="thigh">Thigh</label>
+					<input type="text" class="form-control" id="thigh" name="thigh" [(ngModel)]="thigh" placeholder="Type Here">
+				</div>
+				<div class="form-group">
+					<label for="glute">Glute</label>
+					<input type="text" class="form-control" id="glute" name="glute" [(ngModel)]="glute" placeholder="Type Here">
+				</div>
+				<div class="form-group">
+					<label for="calf">Calf</label>
+					<input type="text" class="form-control" id="calf" name="calf" [(ngModel)]="calf" placeholder="Type Here">
+				</div>	
+						
+			</div>
+			</div>			
+				
+			</form>
+			</div>
+			<div class="card-footer">
+				<button type="submit" class="btn btn-sm btn-primary" [disabled]="passVal" [hidden]="saveVal" (click)="createDailyaction()"><i class="fa fa-check fa-lg"></i> Save</button>
+				<button type="submit" class="btn btn-sm btn-primary" [hidden]="!saveVal" [disabled]="passVal" (click)="updateDailyaction()"><i class="fa fa-check fa-lg"></i> Edit</button>
+				<button type="reset" class="btn btn-sm btn-danger" (click)="clearDailyaction()"><i class="fa fa-remove fa-lg"></i> Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row justify-content-center">	
+	<div id="whiteoverlay" [hidden]="alertVal" class="col-sm-8">
+		<div class="card" style="margin:0px;">
+			<div class="card-header">
+				<strong>Alert</strong>
+			</div>
+			<div class="card-block">
+			<form action="" method="post" name="myForm" enctype="multipart/form-data" class="form-horizontal ">
+			<div class="row">
+			<div class="col-sm-4">			     
+				<div class="form-group">
+					<label>Date</label>
+					<input type="date" [(ngModel)] ="alertdate" name="alertdate" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="wk">Description</label>
+					<textarea name="alertdes" [(ngModel)] ="alertdes" id="" class="form-control" rows="5"></textarea>
+				</div>
+				<div class="col-sm-12 pad-free">
+				   <button type="submit" class="btn btn-sm btn-primary" [disabled]="passVal" [hidden]="saveVal" (click)="createDailyalert()"><i class="fa fa-check fa-lg"></i> Save</button>
+				   <button type="submit" class="btn btn-sm btn-primary" [hidden]="!saveVal" [disabled]="passVal" (click)="updateDailyalert()"><i class="fa fa-check fa-lg"></i> Edit</button>
+				   <button type="button" class="btn btn-sm btn-danger" (click)="clearDailyalert()"><i class="fa fa-remove fa-lg"></i> Cancel</button>
+				</div>							
+			</div>
+			<div class="col-sm-8">
+			<table class="table table-bordered table-striped table-condensed" [mfData]="alertdata" #mf1="mfDataTable"
+                      [mfRowsOnPage]="rowsOnPage1" [(mfSortBy)]="sortBy" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+                      	<thead>
+				   <tr>
+				   	<th>No.</th>
+					<th>Date</th>
+					<th>Description</th>
+					<th colspan="2">&nbsp;</th>
+				   </tr>
+			</thead>
+			<tbody>
+				   <tr *ngFor="let alert of mf1.data;let i=index" [hidden]="alertdata?.length==0">
+				   	<td>{{i+1}}</td>
+				   	<td>{{alert.alert_date}}</td>
+				   	<td>{{alert.alert_description}}</td>
+				   	<td style="width:30px;"><a class="editbtn" (click)="editDailyalert(alert)">
+				   	<i class="fa fa-file-text-o fa-lg reghis" title="Edit"></i></a></td>
+					<td style="width:30px;"><a class="deletebtn" (click)="deleteDailyalert(alert)">
+					<i class="fa fa-trash fa-lg reghis"></i></a></td>
+				   </tr>
+				   <tr [hidden]="alertdata?.length!=0">
+				   	<td>-</td>
+				   	<td>No Record</td>
+				   	<td>-</td>
+				   	<td>-</td>
+				   	<td>-</td>
+				   </tr>
+			</tbody>
+			<tfoot>
+		                <tr>
+		                    <td colspan="5">
+		                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+		                    </td>
+		                </tr>
+		           </tfoot>
+			</table>			
+			</div>
+			</div>
+			</form>
+			</div>
+			<div class="card-footer">				
+				<button type="button" class="btn btn-sm btn-danger float-right" (click)="clearAction()"><i class="fa fa-power-off fa-lg"></i> Close</button>
+			</div>
+		</div>
+	</div>	
+</div>
+<div class="row justify-content-center">	
+	<div id="whiteoverlay" [hidden]="photoVal" class="col-sm-8">
+		<div class="card" style="margin:0px;">
+			<div class="card-header">
+				<strong>Photo Show</strong>
+			</div>
+			<div class="card-block" style="height:450px; overflow-y:auto;">
+				<div class="row">
+					<div class="col-sm-6" *ngFor="let x of xx">
+						<div class="card">
+						   <div class="card-header">
+							<strong (click)="deletePhoto(x)" class="custom-anchor">X</strong>
+						   </div>
+						   <div class="card-block">
+							<img src="{{routeurl}}upload/{{x}}" alt="" class="col-sm-12 img-responsive">
+						   </div>
+						</div>
+						
+			   		</div>
+				</div>			   
+			</div>
+			<div class="card-footer">
+				<button type="reset" class="btn btn-sm btn-danger" (click)="clearAction()"><i class="fa fa-remove fa-lg"></i> Close</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,64 @@
+<div class="animated fadeIn">
+	<div class="row">
+	
+		<div class="col-sm-8">
+			<div class="card">
+				<div class="card-header">
+					<i class="fa fa-align-justify"></i> <strong>Alert Limit</strong>				
+				</div>
+				<div class="card-block">
+			<table class="table table-bordered table-striped table-condensed">
+				<tr>
+					<th>Description</th>
+ 					<th>Limit</th>
+					<th colspan="2">Action</th>
+				</tr>
+				<tr *ngFor="let cate of data" [hidden]="data?.length==0">
+					<td>{{cate.description | uppercase}}</td>
+					<td>{{cate.limit_no}} ({{cate.limit_type}})</td>
+					<td style="width:70px;"><a class="editbtn" (click)="editAlertLimit(cate)" [hidden]="cate.description == 'daily alert'">Edit</a></td>
+				</tr>
+				<tr [hidden]="data?.length!=0">
+					<td>No Record</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+			     
+			</table>
+			</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="card">
+	        			<div class="card-header">
+	        				<strong>Categories Setup</strong>
+	        			</div>
+	        			<div class="card-block">
+		        		        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal ">
+	        				<div class="form-group">
+				                <label for="limitnum">Limit Number</label>
+				                <input type="number" class="form-control" id="limitnum" name="limitnum" [(ngModel)]="limitnum" placeholder="Limit Number">
+				           </div>
+	        			        </form>
+		        		</div>
+		        		<div class="card-footer">
+					<button type="submit" class="btn btn-sm btn-primary" [disabled]="!saveVal" (click)="updateAlertLimit()"><i class="fa fa-check fa-lg"></i> Edit</button>
+					<button type="reset" class="btn btn-sm btn-danger" (click)="clearCategory()"><i class="fa fa-remove fa-lg"></i> Cancel</button>
+				</div>
+	        		</div>	        			
+		</div>
+	</div>
+<!-- 
+
+
+<div class="col-sm-12">
+    <div class="col-sm-6 float-left" *ngFor="let cate of data">
+	    <div class="form-group">
+	    	 <button class="btn btn-primary form-control">aaa</button>
+	    </div>       
+    </div>    
+</div>
+
+
+ -->
+</div>

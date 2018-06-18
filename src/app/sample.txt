@@ -1,0 +1,19 @@
+import { FormControl, FormGroup } from "@angular/forms";
+
+myForm: FormGroup;
+
+
+ngOnInit(){
+	this.myForm = this.FormGroup({
+	  "LoginID": new FormControl(null, [Validators.required]),
+	  "Password": new FormControl(null, [Validators.required])
+	})
+}
+
+onSubmit(){
+	let loginid = this.myForm.get("LoginID").value;
+	let pass = this.myForm.get("Password").value;
+
+	// this.router.navigate(["/dashboard"]);
+	// (["<dashboard>"])
+}

@@ -1,0 +1,75 @@
+<div class="animated fadeIn">
+	<div class="row">
+		<div class="col-sm-12 pad-free">
+		<div class="col-sm-2">
+		<div class="form-group">
+		<input type="text" [(ngModel)] ="namefilter" placeholder="Name" name="namefilter" (input)="filterItem(namefilter)" class="form-control" >
+		</div>	
+		</div>				
+		</div>
+		<div class="col-sm-8">
+			<div class="card">
+				<div class="card-header">
+					<i class="fa fa-align-justify"></i> <strong>Trainers Table</strong>				
+				</div>
+				<div class="card-block">
+			<table class="table table-bordered table-striped table-condensed" [mfData]="data" #mf="mfDataTable"
+           		[mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+ 			<thead>
+				<tr>
+ 					<th>Trainer's Name</th>
+					<th>Remark</th>
+					<th colspan="2">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let cate of mf.data" [hidden]="data?.length==0">
+					<td>{{cate.trainer_name}}</td>
+					<td>{{cate.remark}}</td>
+					<td style="width:70px;"><a class="editbtn" (click)="editTrainer(cate)">Edit</a></td>
+					<td style="width:70px;"><a class="deletebtn" (click)="deleteTrainer(cate)">Delete</a></td>
+				</tr>
+				<tr [hidden]="data?.length!=0">
+					<td>No Record</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+			</tbody>
+			      <tfoot>
+		                <tr>
+		                    <td colspan="4">
+		                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+		                    </td>
+		                </tr>
+		                </tfoot>
+			</table>
+			</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="card">
+	        			<div class="card-header">
+	        				<strong>Trainer Setup</strong>
+	        			</div>
+	        			<div class="card-block">
+		        		<form action="" method="post" enctype="multipart/form-data" class="form-horizontal ">
+	        				<div class="form-group">
+				                <label for="trainer">Trainer's Name</label>
+				                <input type="text" class="form-control" id="trainer" name="trainername" [(ngModel)]="trainername" placeholder="Name">
+				           </div>
+					<div class="form-group">
+				                <label for="remark">Remark</label>
+				                <input type="text" class="form-control" id="remark" name="remark" [(ngModel)]="remark" placeholder="Any Description">
+				           </div>
+	        			</form>
+		        		</div>
+		        		<div class="card-footer">
+					<button type="submit" class="btn btn-sm btn-primary" [hidden]="saveVal" (click)="createTrainer()"><i class="fa fa-check fa-lg"></i> Save</button>
+					<button type="submit" class="btn btn-sm btn-primary" [hidden]="!saveVal" (click)="updateTrainer()"><i class="fa fa-check fa-lg"></i> Edit</button>
+					<button type="reset" class="btn btn-sm btn-danger" (click)="clearTrainer()"><i class="fa fa-remove fa-lg"></i> Cancel</button>
+				</div>
+	        </div>	        			
+		</div>
+	</div>
+</div>

@@ -1,0 +1,205 @@
+<div class="animated fadeIn">
+	<div class="row">
+	<div class="col-sm-12 pad-free">
+	<div class="float-left col-sm-5">
+	<div class="row">
+	<div class="col-sm-5">
+	   <div class="form-group">		
+		<!-- <input type="date" [(ngModel)] ="incfromdatefilter" name="incfromdatefilter" (input)="filterItem(incfromdatefilter,inctodatefilter)" class="form-control" > -->
+		<label for="">From Date</label>
+		<input type="date" [(ngModel)] ="expfromdatefilter" name="expfromdatefilter" class="form-control" >
+	   </div>	
+	</div>
+	<div class="col-sm-5">
+	   <div class="form-group">
+	   	<label for="">To Date</label>	
+		<input type="date" [(ngModel)] ="exptodatefilter" name="exptodatefilter" class="form-control" >
+		<!-- <input type="date" [(ngModel)] ="inctodatefilter" name="inctodatefilter" (input)="filterItem(incfromdatefilter,inctodatefilter)" class="form-control" > -->
+	   </div>	
+	</div>
+	<div class="col-sm-2">
+	    <div class="form-group">
+	    	<button class="btn btn-primary" (click)="ngOnInit()" style="margin-top:28px;">Search</button>
+	    </div>
+	</div>
+	</div>
+	</div>
+	
+	<div class="col-sm-1 float-right">
+		<button (click)="print()" class="form-control print-btn" title="Print"><i class="fa fa-print fa-lg"></i>
+		<span style="font-size:0.8em; font-weight:bold;">Print</span></button>
+	</div>	
+	</div>	
+	
+	<div id="blackoverlay" class="col-sm-12 pad-free" [hidden]="hideVal" style="position:fixed;"></div>
+	   <div class="col-sm-12">
+	      <div class="card">
+		<div class="card-header">
+		   <i class="icon-calculator"></i><strong>Expense Table</strong>
+		   <span class="badge badge-primary float-right add-btn" (click)="showsetup()"><i class="fa fa-plus fa-lg"></i></span>
+		</div>
+		<div class="col-sm-12 pad-free" id="print-section" style="display:none;">
+		<div class="col-sm-3 float-right" id="info">
+	   	   <table class="table table-bordered">
+	   	   	<tr>
+	   	   	   <td><label class="lbl-style">From Date</label></td>
+	   	   	   <td><label class="lbl-style">{{expfromdatefilter}}</label></td>
+	   	   	</tr>
+	   	   	<tr>
+	   	   	   <td><label class="lbl-style">To Date</label></td>
+	   	   	   <td><label class="lbl-style">{{exptodatefilter}}</label></td>
+	   	   	</tr>
+	   	   	<tr>
+	   	   	   <td><label class="lbl-style">Category</label></td>
+	   	   	   <td><label class="lbl-style">{{categoryfilterval}}</label></td>
+	   	   	</tr>
+	   	   </table>	   	   
+	   	</div>
+		    <table class="table table-condensed table-bordered">
+		          <tr>
+				<th>Expense Date</th>
+				<th>Description</th>
+				<th>Category</th>
+				<th>Amount</th>
+				<th>Remark</th>
+			</tr>
+			<tr *ngFor="let exp of data" [hidden]="data?.length==0">
+				<td>{{exp.exp_date}}</td>
+				<td>{{exp.exp_description}}</td>
+				<td>{{exp.category_name}}</td>
+				<td class="nums">{{exp.amount | number : fractionSize}} <span class="units">ks</span></td>
+				<td>{{exp.remark}}</td>
+			</tr>
+			<tr [hidden]="data?.length!=0">
+				<td>-</td>
+				<td>No Record</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+			</tr>
+		    </table>
+		</div>
+		<div class="card-block">
+		<div class="col-sm-12 pad-free">
+		<!-- <div class="col-sm-2">
+			<div class="form-group">		
+			<input type="date" [(ngModel)] ="expdatefilter" name="expdatefilter" (input)="filterItem(categoryfilter,expdatefilter)" class="form-control" >
+			</div>	
+		</div> -->
+		<div class="col-sm-3 pad-free float-left">
+			<div class="form-group">
+			<select name="categoryfilter" [(ngModel)] = "categoryfilter" (ngModelChange)="filterItem(categoryfilter.category_name,categoryfilter.category_id,expdatefilter)" class="form-control" size="1" >
+				<option *ngFor="let x of category" [ngValue]="x">{{x.category_name}}</option>
+			</select>
+			</div>
+		</div>	
+		<div class="col-sm-3 float-right">
+			<label class="col-sm-3 lbl-style">Total</label>:
+			<span class="float-right amtlbl">{{exptotal  | number : fractionSize}} <span style="font-weight:bold;">ks</span></span>
+		</div>
+
+		</div>
+		<table class="table table-bordered table-striped table-condensed" [mfData]="data" #mf="mfDataTable"
+       		[mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+		<thead>
+			<tr>
+				<th>Expense Date</th>
+				<th>Description</th>
+				<th>Category</th>
+				<th>Amount</th>
+				<th>Remark</th>
+				<th colspan="2">Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let exp of mf.data" [hidden]="data?.length==0">
+				<td>{{exp.exp_date}}</td>
+				<td>{{exp.exp_description}}</td>
+				<td>{{exp.category_name}}</td>
+				<td class="nums">{{exp.amount | number : fractionSize}} <span class="units">ks</span></td>
+				<td>{{exp.remark}}</td>
+				<td style="width:70px;"><a class="editbtn" (click)="editExpense(exp)">Edit</a></td>
+				<td style="width:70px;"><a class="deletebtn" (click)="deleteExpense(exp)">Delete</a></td>
+			</tr>
+			<tr [hidden]="data?.length!=0">
+				<td>-</td>
+				<td>No Record</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+			</tr>
+		</tbody>
+		      <tfoot>
+	                <tr>
+	                    <td colspan="7">
+	                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+	                    </td>
+	                </tr>
+	           </tfoot>
+		</table>
+		</div>
+		</div>
+	   </div>
+	
+	</div>
+</div>
+
+<div class="row justify-content-center">
+	<div id="whiteoverlay" [hidden]="setupVal" class="col-sm-4">
+		<div class="card" style="margin:0px;">
+		<div class="card-header">
+			<strong>New Expense</strong>
+			
+		</div>
+		<div class="card-block">
+				<form action="" method="post" enctype="multipart/form-data" class="form-horizontal ">
+			<div class="row">				           
+			<div class="col-sm-6">
+				<div class="form-group">
+				<label for="name">Expense Category</label>
+				<select name="cagegoryname" [(ngModel)] = "cagegoryname" class="form-control" size="1">
+					<option *ngFor="let x of category" [ngValue]="x.category_id">{{x.category_name}}</option>
+				</select>
+				</div>
+			</div>	
+			<div class="col-sm-6">				          		
+				<label>Expense Date</label>
+				<div class="form-group">
+				<input type="date" [(ngModel)] ="expdate" name="expdate" class="form-control" >
+				</div>
+			</div>				            
+			</div>	
+
+			<div class="row">
+				<div class="col-sm-8">
+				<div class="form-group">
+					<label for="name">Expense Description</label>
+					<input type="text" class="form-control" placeholder="Description" [(ngModel)] ="expense_name" name="expense_name">
+				</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group">
+					<label for="name">Expense Amount</label>
+					<input type="number" class="form-control" placeholder="0" [(ngModel)] ="expense_amt" name="expense_amt">
+				</div>
+				</div>
+			</div>	    				           
+			
+			<div class="form-group">
+				<label for="name">Remark</label>
+				<textarea class="form-control" rows="5" placeholder="Any description" [(ngModel)] ="expense_remark" name="expense_remark"></textarea>
+			</div>
+			</form>
+			</div>
+			<div class="card-footer">
+				<button type="submit" class="btn btn-sm btn-primary" [hidden]="saveVal" [disabled]="cagegoryname==0" [disabled]="finishedVal" (click)="createExpense()"><i class="fa fa-check fa-lg"></i> Save</button>
+				<button type="submit" class="btn btn-sm btn-primary" [hidden]="!saveVal" [disabled]="cagegoryname==0" [disabled]="finishedVal" (click)="updateExpense()"><i class="fa fa-check fa-lg"></i> Edit</button>
+				<button type="reset" class="btn btn-sm btn-danger" (click)="clearExpense()"><i class="fa fa-remove fa-lg"></i> Cancel</button>
+			</div>	
+		</div>	        			
+		</div>
+</div>

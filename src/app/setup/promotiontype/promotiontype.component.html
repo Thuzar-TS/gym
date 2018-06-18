@@ -1,0 +1,199 @@
+<div class="animated fadeIn">
+	<div class="row">
+	<div class="row col-sm-12">
+		<div class="col-sm-3">
+		<div class="form-group">
+		<input type="text" [(ngModel)] ="namefilter" placeholder="Promotion Name" name="namefilter" (input)="filterItem(namefilter,protypefilter,fromfilter,tofilter)" class="form-control" >
+		</div>	
+		</div>	
+		<div class="col-sm-3">
+		<div class="form-group">
+		<select name="protypefilter" [(ngModel)] = "protypefilter" (ngModelChange)="filterItem(namefilter,protypefilter,fromfilter,tofilter)" class="form-control" size="1">
+			<option value="">-- Choose Promotion Type --</option>
+			<option value="day">Day Type</option>
+			<option value="amount">Amount Type</option>
+			<option value="member">Member Type</option>
+		</select>
+		</div>	
+		</div>	
+		<div class="row col-sm-3 float-left">
+		<label style="line-height:30px; color:#aaa;">Date :&nbsp;</label>
+		<div class="col-sm-8 pad-free">
+			<div class="form-group">		
+			<input type="date" [(ngModel)] ="fromfilter" name="fromfilter" (input)="searchDate(namefilter,protypefilter,fromfilter)" class="form-control" >
+		</div>
+		</div>			
+		</div>
+		<!-- <div class="row col-sm-3 float-right">
+		<label style="line-height:30px; color:#aaa;">To :&nbsp;</label>
+		<div class="col-sm-8 pad-free">
+			<div class="form-group">		
+			<input type="date" [(ngModel)] ="tofilter" name="tofilter" (input)="filterItem(namefilter,protypefilter,fromfilter,tofilter)" class="form-control" >
+		</div>
+		</div>			
+		</div> -->
+	</div>	
+		
+	
+		<div id="blackoverlay" class="col-sm-12 pad-free" [hidden]="hideVal" style="position:fixed;"></div>
+		<div class="col-sm-12">
+			<div class="card">
+			<div class="card-header">
+				<i class="fa fa-align-justify"></i> <strong>Promotion Type Table</strong>
+				<span class="badge badge-primary float-right add-btn" (click)="showsetup()"><i class="fa fa-plus fa-lg"></i></span>			
+			</div>
+			<div class="card-block">
+		<table class="table table-bordered table-striped table-condensed" [mfData]="data" #mf="mfDataTable"
+       		[mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+			<thead>
+			<tr>
+				<th>Promotion Name</th>
+				<th>Promotion Type</th>
+				<th>Description</th>
+				<th>From Date</th>
+				<th>To Date</th>
+				<th>Remark</th>
+				<th colspan="2">Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let pro of mf.data" [hidden]="data?.length==0" [class.proend]="pro.pro_end==1">
+				<td>{{pro.pro_name}}</td>
+				<td>{{pro.pro_type}}</td>
+				<td>{{pro.pro_description}}</td>
+				<td>{{pro.from_date}}</td>
+				<td>{{pro.to_date}}</td>
+				<td>{{pro.remark}}</td>
+				<td style="width:70px;"><a [hidden]="pro.pro_end==0">-</a><a class="editbtn" [hidden]="pro.pro_end==1" (click)="editPromotion(pro)">Edit</a></td>
+				<td style="width:70px;"><a class="deletebtn" (click)="deletePromotion(pro)">Delete</a></td>
+			</tr>
+			<tr [hidden]="data?.length!=0">
+				<td>No Record</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+			</tr>
+		</tbody>
+	<tfoot>
+            <tr>
+                <td colspan="8">
+                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+                </td>
+            </tr>
+            </tfoot>
+	</table>
+	</div>
+	</div>
+	</div>
+	
+	</div>
+</div>
+<div class="row justify-content-center">
+	<div id="whiteoverlay" [hidden]="setupVal" class="col-sm-6">
+			
+		<div class="card" style="margin:0px;">
+		<div class="card-header">
+			<i class="fa fa-magic"></i><strong>Promotion Setup</strong>
+		</div>
+		<div class="card-block">
+		<div class="form-group" [hidden]="!typeradio">
+			<label class="lbl-style">{{promotiontypelbl | uppercase}}</label>
+		</div>
+		<div class="form-group" [hidden]="typeradio">
+			<div class="row">				        
+			<div class="col-sm-4">
+				<div class="radio">
+				<label for="radio1">
+					<input type="radio" id="radio1" name="protype" (change)="radioChange(protype)" [(ngModel)]="protype" value="day"> Day
+				</label>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="radio">
+				<label for="radio2">
+					<input type="radio" id="radio2" name="protype" (change)="radioChange(protype)" [(ngModel)]="protype" value="amount"> Amount
+				</label>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="radio">
+				<label for="radio3">
+					<input type="radio" id="radio3" name="protype" (change)="radioChange(protype)" [(ngModel)]="protype" value="member"> Member
+				</label>
+				</div>
+			</div>
+			</div>
+		</div>
+			<div class="form-group" [hidden]="protype!='day'">
+				<label for="name">Promotion Days</label>
+				<input type="number" class="form-control" id="name" name="num_day" [(ngModel)]="num_day" placeholder="Days added (in number only)" required>
+			</div>
+			<div class="form-group" [hidden]="protype!='amount'">
+			   <div class="row">
+			      <div class="col-sm-6">
+			      	<label for="name">Discount %</label>
+				<input type="number" class="form-control" [disabled]="num_amt!=null" name="num_per" [(ngModel)]="num_per" placeholder="Discount % (in number only)" required>
+			      </div>
+			      <div class="col-sm-6">
+			      	<label for="name">Amount</label>
+				<input type="number" class="form-control" [disabled]="num_per!=null" name="num_amt" [(ngModel)]="num_amt" placeholder="Amount (in number only)" required>
+			      </div>
+			   </div>
+				
+			</div>
+			<div class="row" [hidden]="protype!='member'">
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label for="name">Number of Register Member</label>
+						<input type="number" class="form-control" name="reg_member" [(ngModel)]="reg_member" placeholder="Register members (in number only)" required>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label for="name">Number of Free Member</label>
+						<input type="number" class="form-control" [disabled]="reg_member==null" name="free_member" [(ngModel)]="free_member" placeholder="Free members (in number only)" required>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Promotion Name</label>
+				<input type="text" class="form-control" name="pro_name" [(ngModel)]="pro_name" placeholder="Enter Promotion Name" required>
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<label>From Date</label>
+					<div class="form-group">
+					<!-- <input type="date" [(ngModel)] ="from_date" (ngModelChange)="datechange(from_date,to_date)" name="from_date" class="form-control"> -->
+					<input type="date" [(ngModel)] ="from_date" name="from_date" class="form-control">
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label>To Date</label>
+					<div class="form-group">
+					<input type="date" [(ngModel)] ="to_date" name="to_date" class="form-control">
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Promotion Description</label>
+				<input type="text" class="form-control" name="pro_description" [(ngModel)]="pro_description" placeholder="Enter Description" required>
+			</div>
+			<div class="form-group">
+				<label>Remark</label>
+				<textarea name="remark" [(ngModel)] ="remark" placeholder="Any Description" class="form-control" rows="2"></textarea>
+			</div>
+			</div>
+
+			<div class="card-footer">
+			  
+				<button type="submit" class="btn btn-sm btn-primary" [hidden]="saveVal" (click)="createPromotion()"><i class="fa fa-check fa-lg"></i> Save</button>
+				<button type="submit" class="btn btn-sm btn-primary" [hidden]="!saveVal" (click)="updatePromotion()"><i class="fa fa-check fa-lg"></i> Edit</button>
+				<button type="reset" class="btn btn-sm btn-danger" (click)="clearPromotion()"><i class="fa fa-remove fa-lg"></i> Cancel</button>
+			</div>
+		   </div>
+		</div>
+</div>

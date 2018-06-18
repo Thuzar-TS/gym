@@ -1,0 +1,141 @@
+<div class="animated fadeIn">
+	<div class="row">
+		<div class="col-sm-12 pad-free">
+			<div class="float-left col-sm-5">
+			<div class="row">
+			<div class="col-sm-5">
+			   <div class="form-group">		
+				<!-- <input type="date" [(ngModel)] ="incfromdatefilter" name="incfromdatefilter" (input)="filterItem(incfromdatefilter,inctodatefilter)" class="form-control" > -->
+				<label for="">From Date</label>
+				<input type="date" [(ngModel)] ="adfromdatefilter" name="adfromdatefilter" class="form-control" >
+			   </div>	
+			</div>
+			<div class="col-sm-5">
+			   <div class="form-group">	
+			   <label for="">To Date</label>	
+				<input type="date" [(ngModel)] ="adtodatefilter" name="adtodatefilter" class="form-control" >
+				<!-- <input type="date" [(ngModel)] ="inctodatefilter" name="inctodatefilter" (input)="filterItem(incfromdatefilter,inctodatefilter)" class="form-control" > -->
+			   </div>	
+			</div>
+			<div class="col-sm-2">
+			    <div class="form-group">
+			    	<button class="btn btn-primary" (click)="ngOnInit()" style="margin-top:28px;">Search</button>
+			    </div>
+			</div>
+			</div>
+			</div>	
+			<div class="col-sm-3 float-right">
+				<table class="table table-bordered" style="background:white;">
+					<tr style="background:#fff;">
+						<td><label class="lbl-style">Income Total</label>:</td>
+						<td><span class="float-right amtlbl">{{inctotal  | number : fractionSize}} <span style="font-weight:bold;">ks</span></span></td>
+					</tr>
+					<tr style="background:#eceff1;">
+						<td><label class="lbl-style">Expense Total</label>:</td>
+						<td><span class="float-right amtlbl" style="color:red;">{{exptotal  | number : fractionSize}} <span style="font-weight:bold;">ks</span></span></td>
+					</tr>
+					<tr style="background:#fff;">
+						<td><label class="lbl-style">Balance</label>:</td>
+						<td><span class="float-right amtlbl">{{baltotal  | number : fractionSize}} <span style="font-weight:bold;">ks</span></span></td>
+					</tr>
+				</table>
+				<!-- <div class="col-sm-12" >
+					<label class="lbl-style">Income Total</label>:
+					<span class="float-right amtlbl">{{inctotal  | number : fractionSize}} <span style="font-weight:bold;">ks</span></span>
+				</div>	
+				<div class="col-sm-12">
+					<label class="lbl-style">Expense Total</label>:
+					<span class="float-right amtlbl">{{exptotal  | number : fractionSize}} <span style="font-weight:bold;">ks</span></span>
+				</div>
+				<div class="col-sm-12">
+					<label class="lbl-style">Balance</label>:
+					<span class="float-right amtlbl">{{baltotal  | number : fractionSize}} <span style="font-weight:bold;">ks</span></span>
+				</div> -->
+			</div>
+		</div>			
+		
+		<div class="col-sm-12">
+		
+		<div class="card">
+		<div class="card-header">
+			<i class="fa fa-align-justify"></i> <strong>Admin Ledger</strong>
+			<!-- <a [routerLink]="['/setup/members']" class="custom-anchor"><i class="fa fa-mail-reply-all fa-lg float-right"></i></a>	 -->	
+		</div>
+		<div class="card-block">
+		<div class="row">
+		   <div class="col-sm-7">
+		   <h6>Expense Ledger</h6>
+		<table class="table table-bordered table-striped table-condensed" [mfData]="adminexp" #mf1="mfDataTable"
+       		[mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+		<thead>
+			<tr>
+				<th>Expense Date</th>
+				<th>Description</th>
+				<th>Category</th>
+				<th>Amount</th>
+				<th>Remark</th>						
+			</tr>
+		</thead>
+		<tbody>	
+			<tr *ngFor="let ledg of mf1.data" [hidden]="adminexp?.length==0">
+				<td>{{ledg.exp_date}}</td>
+				<td>{{ledg.exp_description}}</td>
+				<td>{{ledg.category_name}}</td>
+				<td class="nums">{{ledg.amount | number : fractionSize}} <span class="units">ks</span></td>	
+				<td>{{ledg.remark}}</td>						
+			</tr>
+			<tr [hidden]="adminexp?.length!=0">
+				<td>No Record</td>
+				<td>-</td>
+				<td>-</td>	
+				<td>-</td>
+				<td>-</td>
+			</tr>
+		</tbody>
+		      <tfoot>
+	                <tr>
+	                    <td colspan="5">
+	                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+	                    </td>
+	                </tr>
+	           </tfoot>
+		</table>
+				   </div>
+				   <div class="col-sm-5">
+				   <h6>Income Ledger</h6>
+		<table class="table table-bordered table-striped table-condensed" [mfData]="adminincome" #mf="mfDataTable"
+   		[mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+		<thead>
+			<tr>
+				<th>Description</th>
+				<th>Income Date</th>
+				<th>Amount</th>							
+			</tr>
+		</thead>
+		<tbody>	
+			<tr *ngFor="let ledg of mf.data" [hidden]="adminincome?.length==0">
+				<td>{{ledg.income_description}}</td>
+				<td>{{ledg.income_date}}</td>
+				<td class="nums">{{ledg.average_amt | number : fractionSize}} <span class="units">ks</span></td>							
+			</tr>
+			<tr [hidden]="adminincome?.length!=0">
+				<td>No Record</td>
+				<td>-</td>
+				<td>-</td>							
+			</tr>
+		</tbody>
+		      <tfoot>
+	                <tr>
+	                    <td colspan="7">
+	                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+	                    </td>
+	                </tr>
+	           </tfoot>
+		</table>
+				   </div>	
+				</div>					
+				</div>
+			</div>
+		</div>		
+	</div>
+</div>

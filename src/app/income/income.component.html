@@ -1,0 +1,196 @@
+<div class="animated fadeIn">
+
+	<div class="row">
+	<div class="col-sm-12 pad-free">
+	<div class="float-left col-sm-5">
+	<div class="row">
+	<div class="col-sm-5">
+	   <div class="form-group">		
+		<!-- <input type="date" [(ngModel)] ="incfromdatefilter" name="incfromdatefilter" (input)="filterItem(incfromdatefilter,inctodatefilter)" class="form-control" > -->
+		<label for="">From Date</label>
+		<input type="date" [(ngModel)] ="incfromdatefilter" name="incfromdatefilter" class="form-control" >
+	   </div>	
+	</div>
+	<div class="col-sm-5">
+	   <div class="form-group">
+	   	<label for="">To Date</label>	
+		<input type="date" [(ngModel)] ="inctodatefilter" name="inctodatefilter" class="form-control" >
+		<!-- <input type="date" [(ngModel)] ="inctodatefilter" name="inctodatefilter" (input)="filterItem(incfromdatefilter,inctodatefilter)" class="form-control" > -->
+	   </div>	
+	</div>
+	<div class="col-sm-2">
+	    <div class="form-group">
+	    	<button class="btn btn-primary" (click)="ngOnInit()" style="margin-top:28px;">Search</button>
+	    </div>
+	</div>
+	</div>
+	</div>	
+	
+	<div class="col-sm-1 float-right">
+		<button (click)="print()" class="form-control print-btn" title="Print"><i class="fa fa-print fa-lg"></i><span style="font-size:0.8em; font-weight:bold;">Print</span></button>
+	</div>	
+	</div>		
+	<div class="col-sm-12">
+		
+	</div>
+	<div id="blackoverlay" class="col-sm-12 pad-free" [hidden]="hideVal" style="position:fixed;"></div>
+	   <div class="col-sm-12">
+	      <div class="card">
+		<div class="card-header">
+			<i class="icon-calculator"></i> 
+			<strong>Income Table</strong>
+			<span class="badge badge-primary float-right add-btn" (click)="showsetup()"><i class="fa fa-plus fa-lg"></i></span>			
+		</div>
+		<div class="col-sm-12 pad-free" id="print-section" style="display:none;">
+			<table class="table table-condensed table-bordered">
+				<thead>
+					<tr>
+						<th>Income Date</th>
+						<th>Description</th>
+						<th>Member</th>
+						<th>Type</th>
+						<th>Amount</th>
+						<th>Remark</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let inc of data" [hidden]="data?.length==0">
+						<td>{{inc.income_date}}</td>
+						<td>{{inc.income_description}}</td>
+						<td>{{inc.member_name}}</td>
+						<td>{{inc.mbr_type_name}}</td>
+						<td class="nums">{{inc.average_amt | number : fractionSize}} <span class="units">ks</span></td>
+						<td>{{inc.remark}}</td>						
+					</tr>
+					<tr [hidden]="data?.length!=0">
+						<td>-</td>
+						<td>No Record</td>
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>	
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="card-block">
+		<div class="col-sm-12 pad-free">
+			<div class="row col-sm-6 pad-free float-left">
+			<div class="col-sm-4">
+			<div class="form-group">		
+				<input type="date" [(ngModel)] ="regdatefilter" placeholder="Income Date" name="regdatefilter" (input)="filterItem()" class="form-control" >
+			</div>
+			</div>			
+			<div class="col-sm-4">
+			<div class="form-group">
+			<input type="text" [(ngModel)] ="namefilter" placeholder="Member Name" name="namefilter" (input)="filterItem()" class="form-control" >
+			</div>	
+			</div>	
+			<div class="col-sm-4">
+			<div class="form-group">
+			<input type="text" [(ngModel)] ="idfilter" placeholder="Login ID" name="idfilter" (input)="filterItem()" class="form-control" >
+			</div>	
+			</div>
+			</div>	
+			<div class="col-sm-3 float-right">
+				<label class="col-sm-3 lbl-style">Total</label>:
+				<span class="float-right amtlbl">{{inctotal  | number : fractionSize}} <span style="font-weight:bold;">ks</span></span>
+			</div>
+				
+		</div>	
+		<table class="table table-bordered table-striped table-condensed" [mfData]="data" #mf1="mfDataTable"
+       		[mfRowsOnPage]="rowsOnPage" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+		<thead>
+			<tr>
+				<th>Income Date</th>
+				<th>Description</th>
+				<th>Member</th>
+				<th>ID</th>
+				<th>Type</th>
+				<th>Amount</th>
+				<th>Remark</th>
+				<th colspan="2">Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let inc of mf1.data" [hidden]="data?.length==0">
+				<td>{{inc.income_date}}</td>
+				<td>{{inc.income_description}}</td>
+				<td>{{inc.member_name}}</td>
+				<td>{{inc.member_register_id}}</td>
+				<td>{{inc.mbr_type_name}}</td>
+				<td class="nums">{{inc.average_amt | number : fractionSize}} <span class="units">ks</span></td>
+				<td>{{inc.remark}}</td>
+				<td style="width:60px;"><a [hidden]="inc.edit==1">-</a><a class="editbtn" (click)="editIncome(inc)" [hidden]="inc.edit==0">Edit</a></td>
+				<td style="width:60px;"><a [hidden]="inc.edit==1">-</a><a class="deletebtn" (click)="deleteIncome(inc)" [hidden]="inc.edit==0">Delete</a></td>
+			</tr>
+			<tr [hidden]="data?.length!=0">
+				<td>-</td>
+				<td>No Record</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>	
+				<td>-</td>			
+				<td>-</td>
+				<td>-</td>
+			</tr>
+		</tbody>
+		      <tfoot>
+	                <tr>
+	                    <td colspan="9">
+	                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+	                    </td>
+	                </tr>
+	           </tfoot>
+		</table>
+		</div>
+		</div>
+	   </div>	
+	</div>
+	
+</div>
+
+<div class="row justify-content-center">
+	<div id="whiteoverlay" [hidden]="setupVal" class="col-sm-4">
+		<div class="card" style="margin:0px;">
+		<div class="card-header">
+			<strong>Income</strong>			
+		</div>
+		<div class="card-block">
+		<form action="" method="post" enctype="multipart/form-data" class="form-horizontal ">
+			<div class="row">				           
+			<div class="col-sm-6">
+				<label>Income Date</label>
+				<div class="form-group">
+				<input type="date" [(ngModel)] ="startdate" name="startdate" class="form-control" >
+				</div>
+			</div>
+			<div class="col-sm-6">				          		
+				<div class="form-group">
+				<label for="name">Income Amount</label>
+				<input type="number" class="form-control" placeholder="0" [(ngModel)] ="income_amt" name="income_amt">
+				</div>
+			</div>				            
+			</div>	
+
+			
+			<div class="form-group">
+				<label for="name">Income Description</label>
+				<input type="text" class="form-control" placeholder="Description" [(ngModel)] ="income_name" name="income_name">
+			</div>
+				
+			<div class="form-group">
+				<label for="name">Remark</label>
+				<textarea class="form-control" rows="5" placeholder="Any description" [(ngModel)] ="income_remark" name="income_remark"></textarea>
+			</div>
+			</form>
+			</div>
+			<div class="card-footer">
+				<button type="submit" class="btn btn-sm btn-primary" [hidden]="saveVal" (click)="createIncome()"><i class="fa fa-check fa-lg"></i> Save</button>
+				<button type="submit" class="btn btn-sm btn-primary" [hidden]="!saveVal" (click)="updateIncome()"><i class="fa fa-check fa-lg"></i> Edit</button>
+				<button type="reset" class="btn btn-sm btn-danger" (click)="clearIncome()"><i class="fa fa-remove fa-lg"></i> Cancel</button>
+			</div>	
+		</div>	        			
+		</div>
+</div>

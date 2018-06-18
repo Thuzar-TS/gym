@@ -1,0 +1,81 @@
+<div class="animated fadeIn">
+	<div class="col-sm-12">	 
+	 <div class="card" *ngFor="let mbr of data">
+	   <div class="card-header">
+		  <i class="icon-user"></i> <strong>PROFILE</strong>
+		  <a [routerLink]="['/setup/members']" class="badge badge-primary float-right add-btn">Setup List</a>
+		  <a [routerLink]="['/member/memberlist']" class="badge badge-primary float-right add-btn" style="margin-right:5px;">Registered List</a>
+	   </div>
+	   <div class="card-block">
+	      <div class="row">
+	          <div class="col-sm-2" style="text-align:center;">
+		      <img [hidden]="mbr.gender=='2'" src="../../../assets/img/user.png" class="col-sm-12 img-rounded" id="userimg" alt="" style="margin-bottom:10px;">
+		      <img [hidden]="mbr.gender=='1'" src="../../../assets/img/woman.png" class="col-sm-12 img-rounded" id="userimg" alt="" style="margin-bottom:10px;">
+		      <label class="lbl-style" style="font-size:1.2em;">{{mbr.member_name}}</label><br>
+		      <label style="color:#5d73b3;">{{mbr.member_register_id}}</label>
+		</div>
+		<div class="col-sm-10" style="margin-top:10px;">
+		   <div class="row col-sm-12" style="padding-left:15px;">
+		      <div class="row col-sm-6">
+		      	<div class="col-sm-4 pad-free" style="margin-bottom:15px;">
+		      	   <label class="badge badge-success">Registration Date : </label>
+		      	</div>		      	
+		      	<label class="col-sm-8">{{mbr.register_date}}</label>
+
+		      	<div class="col-sm-4 pad-free" style="margin-bottom:15px;">
+		      	   <label class="badge badge-success">Date of Birth : </label>
+		      	</div>	
+		      	<label class="col-sm-8">{{mbr.dob}}</label>
+
+		      	<div class="col-sm-4 pad-free" style="margin-bottom:15px;">
+		      	   <label class="badge badge-success">Phone : </label>
+		      	</div>		      	
+		      	<label class="col-sm-8">{{mbr.phone}}</label>
+
+		      	<div class="col-sm-4 pad-free" style="margin-bottom:15px;">
+		      	   <label class="badge badge-success">Work : </label>
+		      	</div>		      	
+		      	<label class="col-sm-8">{{mbr.work}}</label>
+
+		      	<div class="col-sm-4 pad-free" style="margin-bottom:15px;">
+		      	   <label class="badge badge-success">Address : </label>
+		      	</div>		      	
+		      	<label class="col-sm-8">{{mbr.address}}</label>	  
+		      </div>
+
+		      <div class="row col-sm-6">
+		          <div class="col-sm-4 pad-free">
+		      	   <label class="badge badge-success">Source : </label>
+		      	</div>		      	
+		      	<label class="col-sm-8">{{mbr.measure}}</label>	
+
+		      	<div class="col-sm-4 pad-free">
+		      	   <label class="badge badge-success">Injury : </label>
+		      	</div>		      	
+		      	<label class="col-sm-8">{{mbr.injury}}</label>
+
+		      	<div class="col-sm-4 pad-free">
+		      	   <label class="badge badge-success">Target Goal : </label>
+		      	</div>		      	
+		      	<label class="col-sm-8">{{mbr.target}}</label>
+
+		      	<div class="col-sm-4 pad-free">
+		      	   <label class="badge badge-success">Recent Gym : </label>
+		      	</div>		      	
+		      	<label class="col-sm-8">{{mbr.recent_gym | uppercase}}</label>
+
+		      	<div class="col-sm-4 pad-free">
+		      	   <label class="badge badge-success">Remark : </label>
+		      	</div>		      	
+		      	<label class="col-sm-8">{{mbr.remark}}</label>
+		      </div>  	      
+		   </div>	   	   
+	      	</div>
+	      </div>
+	   </div>
+	   <div class="card-footer">
+	   	
+	   </div>
+	 </div>	 
+	</div>	
+</div>

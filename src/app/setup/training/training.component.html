@@ -1,0 +1,88 @@
+<div class="animated fadeIn">
+	<div class="row">
+		<div class="col-sm-12 pad-free">
+		<div class="col-sm-2">
+		<div class="form-group">
+		<input type="text" [(ngModel)] ="namefilter" placeholder="Description" name="namefilter" (input)="filterItem(namefilter)" class="form-control" >
+		</div>	
+		</div>				
+		</div>
+		<div class="col-sm-8">
+			<div class="card">
+				<div class="card-header">
+					<i class="fa fa-align-justify"></i> <strong>Training Table</strong>				
+				</div>
+				<div class="card-block">
+			<table class="table table-bordered table-striped table-condensed" [mfData]="data" #mf="mfDataTable"
+           		[mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+ 			<thead>
+				<tr>
+ 					<th>Description</th>
+ 					<th>Remark</th>
+					<th colspan="2">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let cate of mf.data" [hidden]="data?.length==0">
+					<td>{{cate.training_description}}</td>
+					<td>{{cate.remark}}</td>
+					<td style="width:70px;"><a class="editbtn" (click)="editTraining(cate)">Edit</a></td>
+					<td style="width:70px;"><a class="deletebtn" (click)="deleteTraining(cate)">Delete</a></td>
+				</tr>
+				<tr [hidden]="data?.length!=0">
+					<td>No Record</td>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+			</tbody>
+			      <tfoot>
+		                <tr>
+		                    <td colspan="4">
+		                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+		                    </td>
+		                </tr>
+		                </tfoot>
+			</table>
+			</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="card">
+	        			<div class="card-header">
+	        				<strong>Training Setup</strong>
+	        			</div>
+	        			<div class="card-block">
+		        		        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal ">
+	        				<div class="form-group">
+				                <label for="des">Description</label>
+				                <input type="text" class="form-control" id="des" name="trainingname" [(ngModel)]="trainingname" placeholder="Description">
+				           </div>
+				           <div class="form-group">
+				                <label for="remark">Remark</label>
+				                <input type="text" class="form-control" id="remark" name="remark" [(ngModel)]="remark" placeholder="Any description">
+				           </div>
+	        			        </form>
+		        		</div>
+		        		<div class="card-footer">
+					<button type="submit" class="btn btn-sm btn-primary" [hidden]="saveVal" (click)="createTraining()"><i class="fa fa-check fa-lg"></i> Save</button>
+					<button type="submit" class="btn btn-sm btn-primary" [hidden]="!saveVal" (click)="updateTraining()"><i class="fa fa-check fa-lg"></i> Edit</button>
+					<button type="reset" class="btn btn-sm btn-danger" (click)="clearTraining()"><i class="fa fa-remove fa-lg"></i> Cancel</button>
+				</div>
+	        		</div>	        			
+		</div>
+	</div>
+<!-- 
+
+
+<div class="col-sm-12">
+    <div class="col-sm-6 float-left" *ngFor="let cate of data">
+	    <div class="form-group">
+	    	 <button class="btn btn-primary form-control">aaa</button>
+	    </div>       
+    </div>    
+</div>
+
+
+ -->
+</div>

@@ -1,0 +1,94 @@
+<div class="animated fadeIn">
+	<div class="row">
+	<div class="row col-sm-12">
+		<div class="col-sm-2">
+		<div class="form-group">
+		<input type="text" [(ngModel)] ="namefilter" placeholder="User Name" name="namefilter" (input)="filterItem(namefilter,idfilter)" class="form-control" >
+		</div>	
+		</div>	
+		<div class="col-sm-2">
+		<div class="form-group">
+		<input type="text" [(ngModel)] ="idfilter" placeholder="Login ID" name="idfilter" (input)="filterItem(namefilter,idfilter)" class="form-control" >
+		</div>	
+		</div>		
+	</div>	
+	<div id="blackoverlay" class="col-sm-12 pad-free" [hidden]="hideVal" style="position:fixed;"></div>
+		<div class="col-sm-12">
+			<div class="card">
+				<div class="card-header">
+					<i class="icon-people"></i> <strong>User Table</strong>
+					<span class="badge badge-primary float-right add-btn" (click)="showsetup()"><i class="fa fa-plus fa-lg"></i></span>
+				</div>
+				<div class="card-block">
+	<table class="table table-bordered table-striped table-condensed" [mfData]="data" #mf="mfDataTable"
+                   [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+ 			<thead>
+				<tr>
+					<th>User Name</th>
+					<th>Login ID</th>
+					<th colspan="2">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+			<!-- <tr *ngFor="let ledg of mf.data" [hidden]="data?.length==0" class="col-sm-12"> -->			
+			<tr *ngFor="let user of mf.data" [hidden]="data?.length==0">
+				<td>{{user.user_name}}</td>
+				<td>{{user.login_id}}</td>
+				<td style="width:70px;"><a class="editbtn" (click)="editUser(user)">Edit</a></td>
+				<td style="width:70px;"><a class="deletebtn" (click)="deleteUser(user)">Delete</a></td>
+			</tr>
+			<tr [hidden]="data?.length!=0">
+				<td>-</td>
+				<td>No Record</td>
+				<td>-</td>
+				<td>-</td>
+			</tr>
+			</tbody>
+			<tfoot>
+		                <tr>
+		                    <td colspan="4">
+		                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+		                    </td>
+		                </tr>
+		                </tfoot>
+		</table>
+		</div>
+		</div>
+		</div>				
+	</div>	
+</div>
+<div class="row justify-content-center">	
+	<div id="whiteoverlay" [hidden]="setupVal" class="col-sm-4">
+			<div class="card" style="margin:0px;">
+				<div class="card-header">
+					<strong>User Setup</strong>
+				</div>
+				<div class="card-block">
+					<form action="" method="post" name="myForm" enctype="multipart/form-data" class="form-horizontal ">
+						<div class="form-group">
+							<label for="name">User Name</label>
+							<input type="text" class="form-control" id="name" name="new_user" [(ngModel)]="new_user" placeholder="Enter your name">
+						</div>
+						<div class="form-group">
+							<label for="loginid">Login ID</label>
+							<input type="text" class="form-control" id="loginid" name="login_id" [(ngModel)]="login_id" placeholder="Enter your Login ID">
+						</div>
+						<div class="form-group">
+							<label for="loginid">Password</label>
+							<input type="password" class="form-control" id="pass" name="pass" [(ngModel)]="pass" (ngModelChange)="match()" placeholder="Enter Password">
+						</div>
+						<div class="form-group">
+							<label for="loginid">Confirm Password</label>
+							<input type="password" class="form-control" id="compass" name="compass" [(ngModel)]="compass" (ngModelChange)="match()" placeholder="Confirm Password">
+							<span [hidden]="passVal" style="color:red;">Passwords have to match!</span>
+						</div>
+					</form>
+				</div>
+				<div class="card-footer">
+					<button type="submit" class="btn btn-sm btn-primary" [disabled]="!passVal" [hidden]="saveVal" (click)="createUser()"><i class="fa fa-check fa-lg"></i> Save</button>
+					<button type="submit" class="btn btn-sm btn-primary" [hidden]="!saveVal" [disabled]="!passVal" (click)="updateUser()"><i class="fa fa-check fa-lg"></i> Edit</button>
+					<button type="reset" class="btn btn-sm btn-danger" (click)="clearUser()"><i class="fa fa-remove fa-lg"></i> Cancel</button>
+				</div>
+			</div>
+		</div>
+</div>

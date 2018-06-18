@@ -1,0 +1,123 @@
+<div class="animated fadeIn">
+	<div class="row">
+	<div class="col-6 col-lg-3">
+      <div class="card">
+        <div class="card-block p-1 clearfix">
+          <i class="icon-people bg-primary p-1 font-2xl mr-1 float-left"></i>
+          <div class="h6 text-primary text-uppercase mb-0 mt-h">Daily</div>
+          <div class="text-muted font-weight-bold font-xs">{{dailymbr}} [member]</div>
+        </div>
+      </div>
+    </div>
+	<div class="col-6 col-lg-3">
+      <div class="card">
+        <div class="card-block p-1 clearfix">
+          <i class="icon-people bg-warning p-1 font-2xl mr-1 float-left"></i>
+          <div class="h6 text-warning text-uppercase mb-0 mt-h">Monthly</div>
+          <div class="text-muted font-weight-bold font-xs">{{monthlymbr}} [member]</div>
+        </div>
+      </div>
+    </div>
+	<div class="col-6 col-lg-3">
+      <div class="card">
+        <div class="card-block p-1 clearfix">
+          <i class="icon-people bg-success p-1 font-2xl mr-1 float-left"></i>
+          <div class="h6 text-success text-uppercase mb-0 mt-h">Active</div>
+          <div class="text-muted font-weight-bold font-xs">{{activembr}} [member]</div>
+        </div>
+      </div>
+    </div>
+	<div class="col-6 col-lg-3">
+      <div class="card">
+        <div class="card-block p-1 clearfix">
+          <i class="icon-people bg-danger p-1 font-2xl mr-1 float-left"></i>
+          <div class="h6 text-danger text-uppercase mb-0 mt-h">End</div>
+          <div class="text-muted font-weight-bold font-xs">{{endmbr}} [member]</div>
+        </div>
+      </div>
+    </div>	
+	</div>
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="card">
+			<div class="card-header">
+				<i class="fa fa-align-justify"></i> <strong>Promotion</strong>
+			</div>
+			<div class="card-block">
+		<table class="table table-bordered table-striped table-condensed" [mfData]="promo" #mf1="mfDataTable"
+       		[mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+			<thead>
+			<tr>
+				<th>Promotion Name</th>
+				<th>Description</th>
+				<th>From Date</th>
+				<th>To Date</th>			
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let pro of mf1.data" [hidden]="promo?.length==0">
+				<td>{{pro.pro_name}}</td>
+				<td>{{pro.pro_description}}</td>
+				<td>{{pro.from_date}}</td>
+				<td>{{pro.to_date}}</td>
+			
+			</tr>
+			<tr [hidden]="promo?.length!=0">
+				<td>No Promotion Create.</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				
+			</tr>
+		</tbody>
+	<tfoot>
+            <tr>
+                <td colspan="4">
+                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+                </td>
+            </tr>
+            </tfoot>
+	</table>
+	</div>
+	</div>
+	</div>
+
+	<div class="col-sm-6">
+			<div class="card">
+				<div class="card-header">
+					<i class="icon-calendar"></i> <strong>Off Days</strong>				
+				</div>
+			<div class="card-block">
+				
+			<table class="table table-bordered table-striped table-condensed" [mfData]="offday" #mf="mfDataTable"
+           		[mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+ 			<thead>
+				<tr>
+					<th>Off Date</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let day of mf.data" [hidden]="offday?.length==0">
+					<td>{{day.off_date}}</td>
+					<td>{{day.description}}</td>
+				</tr>
+				<tr [hidden]="offday?.length!=0">
+					<td>No Offday Assign</td>
+					<td>-</td>
+				</tr>
+			</tbody>
+			      <tfoot>
+		                <tr>
+		                    <td colspan="2">
+		                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+		                    </td>
+		                </tr>
+		                </tfoot>
+			</table>
+			</div>
+			</div>
+		</div>
+
+	</div>
+</div>

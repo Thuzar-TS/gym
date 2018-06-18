@@ -1,0 +1,67 @@
+<div class="animated fadeIn">
+	<div class="row">
+	<div class="col-sm-12 pad-free">
+		<div class="col-sm-2">
+		<div class="form-group">
+		<input type="text" [(ngModel)] ="namefilter" placeholder="Member Type Name" name="namefilter" (input)="filterItem(namefilter)" class="form-control" >
+		</div>	
+		</div>				
+	</div>
+		<div class="col-sm-8">
+		<div class="card">
+		  	<div class="card-header">
+		  		<i class="icon-people"></i> <strong>Member Type Table</strong>				
+		  	</div>
+		  	<div class="card-block">
+		  	
+		  	<table class="table table-bordered table-striped table-condensed" [mfData]="data" #mf="mfDataTable"
+           		[mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+ 			<thead>
+			  	<tr>
+			  		<th>Member Type Name</th>
+			  		<!-- <th>Action</th> -->
+			  	</tr>
+			</thead>
+			<tbody>
+			  	<tr *ngFor="let mtypes of mf.data" [hidden]="data?.length==0">
+			  		<td>{{mtypes.mbr_type_name}}</td>
+			  		<!-- <td style="width:70px;"><a class="editbtn" (click)="editType(mtypes)">Edit</a></td> -->
+			  	</tr>
+			  	<tr [hidden]="data?.length!=0">
+					<td>No Record</td>
+					<!-- <td>-</td> -->
+				</tr>
+			  </tbody>
+			      <tfoot>
+		                <tr>
+		                    <td colspan="1">
+		                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+		                    </td>
+		                </tr>
+		                </tfoot>
+			  </table>
+			  </div>
+		  </div>	
+		</div>
+		<!-- <div class="col-sm-4">
+			<div class="card">
+			        			<div class="card-header">
+			        				<strong>Member Type</strong>
+			        			</div>
+			        			<div class="card-block">
+		        		        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal ">
+			        				<div class="form-group">
+				                <label for="membertype">Member Type</label>
+				                <input type="text" class="form-control" id="membertype" name="typename" [(ngModel)]="typename" placeholder="Description">
+				           </div>
+			        			        </form>
+		        		</div>
+		        		<div class="card-footer">
+			          		<button type="submit" class="btn btn-sm btn-primary" [hidden]="saveVal" (click)="createType(typename)"><i class="fa fa-check fa-lg"></i> Save</button>
+			          		<button type="submit" class="btn btn-sm btn-primary" [disabled]="!saveVal" (click)="updateType(typename)"><i class="fa fa-check fa-lg"></i> Edit</button>
+			          		<button type="reset" class="btn btn-sm btn-danger" (click)="clearType()" ><i class="fa fa-remove fa-lg"></i> Cancel</button>
+			        	</div>	
+			        		</div>	        			
+		</div> -->
+	</div>
+</div>

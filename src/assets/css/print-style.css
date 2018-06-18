@@ -1,0 +1,34 @@
+body{
+ padding:20px;
+ margin:0px;
+}
+td,tr,th{
+ border:1px solid #ccc;
+}
+td,th{
+	padding:3px 5px;
+}
+th{
+	text-align: left;
+}
+table{
+	width:100%;
+	border-collapse: collapse;
+}
+label{
+	font-weight: bold;
+}
+#namelbl{
+	float:right;
+	border:1px solid #ccc;
+	padding: 5px 10px;
+}
+#info table{
+	width:40%;
+	
+	border:0px;
+	margin-bottom: 10px;
+}
+#info table td,#info table tr{
+	border:0px;
+}

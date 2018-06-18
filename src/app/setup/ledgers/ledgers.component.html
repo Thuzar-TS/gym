@@ -1,0 +1,186 @@
+<div class="animated fadeIn">
+	<div class="row">
+	<div class="col-sm-12 pad-free">
+	<div class="float-left col-sm-5">
+		<div class="row">
+		<div class="col-sm-5">
+		   <div class="form-group">		
+			<!-- <input type="date" [(ngModel)] ="incfromdatefilter" name="incfromdatefilter" (input)="filterItem(incfromdatefilter,inctodatefilter)" class="form-control" > -->
+			<label for="">From Date</label>
+			<input type="date" [(ngModel)] ="mbfromdatefilter" name="mbfromdatefilter" class="form-control" >
+		   </div>	
+		</div>
+		<div class="col-sm-5">
+		   <div class="form-group">	
+		   	<label for="">To Date</label>		
+			<input type="date" [(ngModel)] ="mbtodatefilter" name="mbtodatefilter" class="form-control" >
+			<!-- <input type="date" [(ngModel)] ="inctodatefilter" name="inctodatefilter" (input)="filterItem(incfromdatefilter,inctodatefilter)" class="form-control" > -->
+		   </div>	
+		</div>
+		<div class="col-sm-2">
+		    <div class="form-group">
+		    	<button class="btn btn-primary" (click)="ngOnInit()" style="margin-top:28px;">Search</button>
+		    </div>
+		</div>
+		</div>
+		</div>	
+		<div class="col-sm-1 float-right">
+			<button (click)="print()" class="form-control print-btn" title="Print"><i class="fa fa-print fa-lg"></i>
+			<span style="font-size:0.8em; font-weight:bold;">Print</span></button>
+		</div>			
+	</div>
+	<div id="blackoverlay" class="col-sm-12 pad-free" [hidden]="hideVal" style="position:fixed;"></div>
+	<div class="col-sm-12">
+	<div class="card">
+	<div class="card-header">
+		<i class="fa fa-align-justify"></i> <strong>Ledger</strong>
+		<a [routerLink]="['/setup/members']" class="custom-anchor"><i class="fa fa-mail-reply-all fa-lg float-right"></i></a>	
+	</div>
+	<div class="col-sm-12 pad-free" id="print-section" style="display:none;">
+	<div class="col-sm-12 pad-free" *ngFor="let mb of mbr">
+	   <!-- <div class="row"> -->	   
+	   	   <label id="namelbl">{{mb.member_name}}</label>	
+	   	<div class="col-sm-3 float-right" id="info">
+	   	   <table class="table table-bordered">
+	   	   	<tr>
+	   	   		<td><label class="lbl-style">Height</label></td><td><label class="lbl-style">{{mb.height}}</label></td>
+	   	   	</tr>
+	   	   	<tr>
+	   	   		<td><label class="lbl-style">Weight</label></td><td><label class="lbl-style">{{mb.weight}}</label></td>
+	   	   	</tr>
+	   	   	<tr>
+	   	   		<td><label class="lbl-style">Target</label></td><td><label class="lbl-style">{{mb.target}}</label></td>
+	   	   	</tr>
+	   	   </table>
+	   	   
+	   	</div>
+	   <!-- </div> -->
+	</div>
+		<table class="table table-condensed table-bordered">
+ 			<thead>
+			<tr style="width:100%;">
+				<th>Deposit Date</th>
+				<th>Daily Action</th>
+				<th>Daily Food</th>						
+			</tr>
+			</thead>
+			<tbody>
+			<tr *ngFor="let ledg of data" [hidden]="data?.length==0" class="col-sm-12">
+				<td>{{ledg.income_date}}</td>
+				<td>{{ledg.daily_action}}</td>
+				<td>{{ledg.daily_food}}</td>
+				
+			</tr>
+			<tr [hidden]="data?.length!=0">
+				<td>No Record</td>
+				<td>-</td>
+				<td>-</td>				
+			</tr>
+		     </tbody>
+		</table>
+	</div>
+	<div class="card-block" style="padding-bottom:5px;">
+	<div class="col-sm-12 pad-free" *ngFor="let mb of mbr">
+	   <!-- <div class="row"> -->	   
+	   	<div class="col-sm-2 pad-free float-left">
+	   	   <label class="lbl-style">{{mb.member_name}} ({{mb.member_register_id}})</label>	
+	   	</div>
+	   	<div class="col-sm-3 float-right">
+	   	   <table class="table table-bordered">
+	   	   	<tr>
+	   	   		<td><label class="lbl-style">Height</label></td><td><label class="lbl-style">{{mb.height}}</label></td>
+	   	   	</tr>
+	   	   	<tr>
+	   	   		<td><label class="lbl-style">Weight</label></td><td><label class="lbl-style">{{mb.weight}}</label></td>
+	   	   	</tr>
+	   	   	<tr>
+	   	   		<td><label class="lbl-style">Target</label></td><td><label class="lbl-style">{{mb.target}}</label></td>
+	   	   	</tr>
+	   	   </table>
+	   	   
+	   	</div>
+	   <!-- </div> -->
+	</div>
+	
+	<table class="table table-bordered table-striped table-condensed" [mfData]="data" #mf="mfDataTable"
+                   [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+ 			<thead>
+			<tr style="width:100%;">
+				<th>Description</th>
+				<th>Deposit Date</th>
+				<th>Voucher Number</th>
+				<th style="text-align:right;">Amount</th>	
+				<th>Daily Action</th>
+				<th>Daily Food</th>						
+				<th colspan="2">Action</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr *ngFor="let ledg of mf.data" [hidden]="data?.length==0" class="col-sm-12">
+				<td>{{ledg.income_description}}</td>
+				<td>{{ledg.income_date}}</td>
+				<td>{{ledg.voucher}}</td>
+				<td class="nums">{{ledg.average_amt | number : fractionSize}} <span class="units">ks</span></td>
+				<td>{{ledg.daily_action}}</td>
+				<td>{{ledg.daily_food}}</td>
+				<td style="width:90px;"><a class="editbtn" (click)="editCategory()">Leave on/off</a></td>
+				<td style="width:90px;"><a class="editbtn" (click)="dailyAction(ledg)">Daily Action</a></td>
+			</tr>
+			<tr [hidden]="data?.length!=0">
+				<td>No Record</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+			</tr>
+		     </tbody>		     
+	            <tfoot>
+	                <tr>
+	                    <td colspan="7">
+	                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+	                    </td>
+	                </tr>
+	                </tfoot>
+		</table>					
+	</div>
+	</div>
+	</div>	
+	
+	</div>
+</div>
+
+<div class="row justify-content-center">
+	<div id="whiteoverlay" [hidden]="dailyVal" class="col-sm-4">
+		<div class="card" style="margin:0px;">
+			<div class="card-header">
+				<i class="fa fa-align-justify"></i><strong>Daily Action & Daily Food</strong>
+			</div>
+			<div class="card-block">
+				<form action="" method="post" name="myForm" enctype="multipart/form-data" class="form-horizontal ">
+					<div class="form-group">
+						<div class="col-sm-12 pad-free">
+						<label>Daily Action</label>
+						</div>
+						<div class="col-sm-12 pad-free">
+							<textarea name="dailyaction" [(ngModel)] ="dailyaction" class="form-control" rows="4"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-12 pad-free">
+						<label>Daily Food</label>
+						</div>
+						<div class="col-sm-12 pad-free">
+							<textarea name="dailyfood" [(ngModel)] ="dailyfood" class="form-control" rows="4"></textarea>
+						</div>
+					</div>	
+				</form>
+			</div>
+			<div class="card-footer">
+				<button type="submit" class="btn btn-sm btn-primary" [disabled]="finishedVal" (click)="dailySave()"><i class="fa fa-check fa-lg"></i> Save</button>
+				<button type="reset" class="btn btn-sm btn-danger" (click)="clearDaily()"><i class="fa fa-remove fa-lg"></i> Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>

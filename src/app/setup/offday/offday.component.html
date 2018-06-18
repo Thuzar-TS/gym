@@ -1,0 +1,106 @@
+<div class="animated fadeIn">
+	<div class="row">
+	<div class="col-sm-12 pad-free">
+	<div class="col-sm-2">
+	<div class="form-group">		
+		<input type="date" [(ngModel)] ="offdatefilter" name="offdatefilter" (input)="filterItem(offdatefilter)" class="form-control" >
+	</div>	
+	</div>				
+	</div>
+	<div id="blackoverlay" class="col-sm-12 pad-free" [hidden]="hideVal" style="position:fixed;"></div>
+		<div class="col-sm-8">
+			<div class="card">
+				<div class="card-header">
+					<i class="icon-calendar"></i> <strong>Off Day Table</strong>				
+				</div>
+			<div class="card-block">
+			<table class="table table-bordered table-striped table-condensed" [mfData]="data" #mf="mfDataTable"
+           		[mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [mfIsServerPagination]="false" [(mfSortOrder)]="sortOrder">
+ 			<thead>
+				<tr>
+					<th>Off Date</th>
+					<th>Description</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let day of mf.data" [hidden]="data?.length==0">
+					<td>{{day.off_date}}</td>
+					<td>{{day.description}}</td>
+					<td style="width:70px;"><a class="deletebtn" (click)="deleteOffday(day)">{{day.action}}</a></td>
+				</tr>
+				<tr [hidden]="data?.length!=0">
+					<td>No Record</td>
+					<td>-</td>
+					<td>-</td>
+				</tr>
+			</tbody>
+			      <tfoot>
+		                <tr>
+		                    <td colspan="3">
+		                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+		                    </td>
+		                </tr>
+		                </tfoot>
+			</table>
+			</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="card">
+	        			<div class="card-header">
+	        				<strong>Off Day Assign</strong>
+	        			</div>
+	        			<div class="card-block">
+        				  <div class="form-group">
+        				      <label for="">Description</label>
+			                <input type="text" [(ngModel)] ="offdesc" placeholder="Any" name="offdesc" class="form-control" >
+			            </div>	
+			            <div class="form-group">
+			                <label for="">Off Date</label>
+			                <input type="date" [(ngModel)] ="offdayname" name="offdayname" class="form-control" >
+			            </div>				            		            
+		        		</div>
+		        		<div class="card-footer">
+					<button type="submit" class="btn btn-sm btn-primary" [disabled]="offdesc=='' || offdayname==''" (click)="createOffday()"><i class="fa fa-check fa-lg"></i> Save</button>
+				</div>
+	        		</div>	        			
+		</div>
+	</div>
+	
+</div>
+<div class="row justify-content-center">
+	<div id="whiteoverlay" [hidden]="confirmVal" class="col-sm-4">
+	   <div class="card" style="margin:0px;">	     
+		<div class="card-header">
+		   <strong>Confirmation Box</strong>
+		</div>
+		<div class="card-block">
+		   <label for="">There're some income transactions on {{offdayconfirm}}</label>
+		   <div class="col-sm-12">
+		      <div class="col-sm-12">
+                                <div class="radio">
+                                    <label for="radio1">
+                                        <input type="radio" id="radio1" name="radioconfirm" [(ngModel)] ="radioconfirm" value="replace"> Delete income transactions with replacement.
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label for="radio2">
+                                        <input type="radio" id="radio2" name="radioconfirm" [(ngModel)] ="radioconfirm" value="noreplace"> Delete income transactions no replacement.
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label for="radio3">
+                                        <input type="radio" id="radio3" name="radioconfirm" [(ngModel)] ="radioconfirm" value="no"> No Action.
+                                    </label>
+                                </div>
+                            </div>
+		   </div>
+		</div>
+		<div class="card-footer">
+		   <button type="submit" class="btn btn-sm btn-primary" (click)="confirmOffday()"><i class="fa fa-check fa-lg"></i> Confirm</button>
+		   <button type="reset" class="btn btn-sm btn-danger" (click)="clearConfirm()"><i class="fa fa-remove fa-lg"></i> Cancel</button>
+		</div>
+	   </div>
+	</div>
+</div>

@@ -1,0 +1,217 @@
+<header class="app-header navbar">
+    <button class="navbar-toggler mobile-sidebar-toggler hidden-lg-up" type="button">&#9776;</button>
+    <a class="navbar-brand" href="#"></a>
+    <ul class="nav navbar-nav hidden-md-down">
+        <li class="nav-item">
+            <a class="nav-link navbar-toggler sidebar-toggler" href="#">&#9776;</a>
+        </li>
+    </ul>
+    <ul class="nav navbar-nav ml-auto">
+    <li class="nav-item hidden-md-down" dropdown (onToggle)="toggled($event)" style="cursor:pointer;">
+      <a class="nav-link" data-toggle="dropdown" dropdownToggle>
+      <i class="fa fa-bell fa-lg"></i><span class="badge badge-pill badge-danger">{{noti}}</span></a>
+
+      <div class="dropdown-menu dropdown-menu-right" dropdownMenu aria-labelledby="simple-dropdown"  [hidden]="noti==0">
+
+        <div class="dropdown-header text-center"><strong>Alert</strong></div>
+        <div class="col-sm-12">
+         <div class="row">
+           <span class="col-sm-12 pad-free" ><a class="float-left dropdown-item" style="font-size:0.9em;" data-toggle="modal" (click)="primaryModal1.show()"><i class="fa fa-bell-o"></i> Expired Alert<span class="float-right noti">{{expiredalertsize}}</span></a></span>          
+         </div>
+          
+        </div>
+        <div class="col-sm-12">
+        <div class="row">
+         <span class="col-sm-12 pad-free" ><a class="float-left dropdown-item" style="font-size:0.9em;" data-toggle="modal" (click)="primaryModal.show()"><i class="fa fa-bell-o"></i> Daily Alert<span class="float-right noti">{{dailyalertsize}}</span></a></span>          
+        </div>
+          
+        </div>
+        <!-- <div class="col-sm-12 pad-free" *ngFor="let alt of data">
+               <span class="col-sm-12 pad-free" (click)="showalert(alt)"><a class="dropdown-item" style="font-size:0.9em;" data-toggle="modal" (click)="primaryModal.show()"><i class="fa fa-bell-o"></i> {{alt.member_name}}({{alt.member_register_id}})</a></span>
+           </div> -->   
+        
+      </div>
+    </li>
+    <!-- <li class="nav-item dropdown" dropdown (onToggle)="toggled($event)">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle> -->
+    </ul>
+</header>
+
+<div class="app-body">
+    <div class="sidebar">
+        <nav class="sidebar-nav">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/dashboard']"><i class="icon-speedometer"></i> Dashboard</a>
+                </li>
+                <li class="divider"></li>
+                
+                <li class="nav-item nav-dropdown" routerLinkActive="open">
+                  <a class="nav-link nav-dropdown-toggle" href="#"><i class="fa fa-edit"></i> Setups</a>
+                  <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                      <a class="nav-link" routerLinkActive="active" [routerLink]="['/setup/users']"><i class="icon-user"></i> Users</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" routerLinkActive="active" [routerLink]="['/setup/registerid']"><i class="fa fa-font"></i> Register ID Generate</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" routerLinkActive="active" [routerLink]="['/setup/members']"><i class="icon-people"></i> Members</a>
+                    </li>                    
+                    <li class="nav-item">
+                      <a class="nav-link" routerLinkActive="active" [routerLink]="['/setup/membertype']"><i class="icon-puzzle"></i> Member Types</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" routerLinkActive="active" [routerLink]="['/setup/promotiontype']"><i class="icon-hourglass"></i> Promotion Types</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" routerLinkActive="active" [routerLink]="['/setup/categories']"><i class="icon-puzzle"></i> Categories</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" routerLinkActive="active" [routerLink]="['/setup/alertlimit']"><i class="icon-bubbles"></i> Alert Limit</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" routerLinkActive="active" [routerLink]="['/setup/offday']"><i class="icon-calendar"></i> Off Days</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" routerLinkActive="active" [routerLink]="['/setup/trainers']"><i class="icon-people"></i> Trainer Setup</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" routerLinkActive="active" [routerLink]="['/setup/training']"><i class="icon-puzzle"></i> Training Setup</a>
+                    </li>                                   
+                  </ul>
+                </li>
+                <li class="nav-item nav-dropdown" routerLinkActive="open">
+                  <a class="nav-link" routerLinkActive="active" [routerLink]="['/member/memberlist']"><i class="icon-people"></i> Member List</a>
+                  <ul class="nav-dropdown-items">
+                     <li class="nav-item" [hidden]="true">
+                      <a class="nav-link" routerLinkActive="active" [routerLink]="['/member/memberlist']"><i class="fa fa-file-text-o fa-lg reghis"></i> Member List</a>
+                    </li>
+                    <li class="nav-item" [hidden]="true">
+                      <a class="nav-link" routerLinkActive="active" [routerLink]="['/member/memberledger']"><i class="icon-calculator"></i> Member Ledger</a>
+                    </li>
+                    <li class="nav-item" [hidden]="true">
+                      <a class="nav-link" routerLinkActive="active" [routerLink]="['/member/ledgers']"><i class="icon-people"></i> Members</a>
+                    </li>
+                    <li class="nav-item" [hidden]="true">
+                      <a class="nav-link" routerLinkActive="active" [routerLink]="['/member/registers']"><i class="icon-people"></i> Registers</a>
+                    </li>
+                    <li class="nav-item" [hidden]="true">
+                      <a class="nav-link" routerLinkActive="active" [routerLink]="['/member/dailyaction']"><i class="icon-people"></i> Daily Action</a>
+                    </li>
+                    <li class="nav-item" [hidden]="true">
+                      <a class="nav-link" routerLinkActive="active" [routerLink]="['/member/profile']"><i class="icon-people"></i> Profile</a>
+                    </li>                                 
+                  </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/income']"><i class="fa fa-dollar fa-lg"></i> Income</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/expense']"><i class="fa fa-dollar fa-lg"></i> Expenses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/adminledger']"><i class="icon-notebook icons"></i> Admin Ledger</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/excelreport']"><i class="fa fa-file-text-o fa-lg"></i> Excel Report</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" routerLinkActive="active" [routerLink]="['/config']"><i class="icon-settings icons"></i> Config</a>
+                </li> -->
+                <li class="divider"></li>  
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/']"><i class="fa fa-lock"></i> Logout</a>
+                </li> 
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main content -->
+    <main class="main">
+
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb">
+            <breadcrumbs></breadcrumbs>
+        </ol>
+
+        <div class="container-fluid">
+            <router-outlet></router-outlet>
+        </div>
+        <!-- /.conainer-fluid -->
+    </main>
+
+    <div bsModal #primaryModal1="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-primary modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Expired Alert</h4>
+            <button type="button" class="close" (click)="primaryModal1.hide()" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-6" *ngFor="let alt of expiredalert">
+             <div class="card">
+               <div class="card-header">
+                <i class="icon-user" style="color:#741600; font-weight:bold;"></i>
+                <label style="margin-bottom:0px;color:#741600; font-weight:bold;">{{alt.member_name}}</label>
+               </div>
+               <div class="card-block">
+                <label style="color:#741600; font-weight:bold;">{{alt.member_name}}</label> => Expired Date <label style="color:#741600; font-weight:bold;">({{alt.expired_date}})</label>
+               </div>
+               <div class="card-footer" style="padding:3px 3px;">
+                 <button type="button" class="btn btn-primary float-right" (click)="endmember(alt.member_id,alt.expired_date)"><span style="font-size:0.9em" (click)="primaryModal1.hide()">End Member</span></button>
+               </div>
+             </div>
+            </div>
+          </div>                  
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="primaryModal1.hide()">Close</button>            
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+    <div bsModal #primaryModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-primary modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Daily Alert</h4>
+            <button type="button" class="close" (click)="primaryModal.hide()" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-6" *ngFor="let alt of dailyalert">
+             <div class="card">
+               <div class="card-header">
+                <i class="icon-user" style="color:#741600; font-weight:bold;"></i>
+                <label style="margin-bottom:0px;color:#741600; font-weight:bold;">{{alt.member_name}}</label>
+               </div>
+               <div class="card-block" style="min-height:150px;">
+                <label style="color:#741600; font-weight:bold;">{{alt.alert_description}}</label>
+               </div>               
+             </div>
+            </div>
+          </div>                  
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="primaryModal.hide()">Close</button>            
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+</div>
+
+<!-- <footer class="app-footer">
+    <a href="http://coreui.io">CoreUI</a> &copy; 2017 creativeLabs.
+    <span class="float-right">Powered by <a href="http://coreui.io">CoreUI</a>
+    </span>
+</footer> -->
+
+
